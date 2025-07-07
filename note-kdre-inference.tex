@@ -101,6 +101,23 @@ citecolor=blue
 \newtheorem{corollary}{Corollary}
 \numberwithin{corollary}{section}
 
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+\usepackage[
+authordate,
+sorting=nyt,
+backend=biber,
+maxcitenames=3,
+natbib,
+doi=false,
+isbn=false,
+url=false,
+% eprint=false
+]{biblatex-chicago}
+
+\addbibresource{note-kdre-inference.bib}
+
 \title{A note on inference for kernel estimators of density and
 regression functions}
 \author{Ahnaf Rafi}
@@ -111,5 +128,11 @@ regression functions}
 \maketitle
 
 \input{sections/introduction.tex}
+
+\printbibliography
+
+\appendix
+
+\input{sections/appendix-kernel-approx.tex}
 
 \end{document}
