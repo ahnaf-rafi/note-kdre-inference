@@ -159,8 +159,10 @@ sufficiently small due to \Cref{asm--convl-kernel}
 \ref{asm--convl-kernel-convl-prob}.
 \end{proof}
 
-We therefore need some way(s) to deal with the second term.
+We therefore need some way(s) to show \eqref{eqn--convl-kernel-conv-criteria} to
+deal with the second term in \eqref{eqn--convl-kernel-inequality-main}.
 We present two ways to do this.
+
 
 \begin{theorem}
 \label{thm--convl-kernel-conv-bounded}
@@ -222,13 +224,60 @@ Suppose the family \(\left\{ K_{h} \right\}\) satisfies
 \Cref{asm--convl-kernel} and \Cref{asm--convl-kernel-conv-thin-tail}.
 Let \(x \in \mathbb{R}^{d}\) be given, and let \(g : \mathbb{R}^{d} \to
 \mathbb{R}\) be a Lebesgue-integrable function that is continuous at \(x\).
-Assume also that the integral in \eqref{eqn--convl-kernel-approximant} exists
-for all \(h > 0\) sufficiently small.
-Then \(\lim_{h \to 0} g_{h} (x) = g (x)\).
+Then for \(h > 0\) sufficiently small, the integral in
+\eqref{eqn--convl-kernel-approximant} exists and is finite.
+Furthermore, \(\lim_{h \to 0} g_{h} (x) = g (x)\).
 \end{theorem}
 
 \begin{proof}[Proof of \Cref{thm--convl-kernel-conv-thin-tail}]
-Given any \(\delta > 0\)
+For existence and finiteness of the integral in
+\eqref{eqn--convl-kernel-approximant}, first note that for any \(\delta > 0\),
+\begin{equation*}
+  |g (x - u)| \left| K_{h} (u) \right| \leq |g (x - u)| \left| K_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x - u)| \left| K_{h}
+  (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
+\end{equation*}
+Take any \(\varepsilon \in (0, \infty)\) and choose \(\delta :=
+\delta_{\varepsilon, x} \in (0, \infty)\) to ensure that \(|g (x - u) - g (x)| <
+\varepsilon\) for \(\|u\| < \delta\).
+Then, \(|g (x - u)| < |g (x)| + \varepsilon\) and combining this with the bound
+in the above display,
+\begin{align*}
+  |g (x - u)| \left| K_{h} (u) \right| \leq
+  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x - u)| \left| K_{h}
+  (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  \leq
+  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
+  \|u\| < \delta \right\} \\
+  & + \frac{|g (x - u)|}{\|u\|^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
+  \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  \leq
+  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
+  \|u\| < \delta \right\} \\
+  & + \frac{|g (x - u)|}{\delta^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
+  \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  \leq
+  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
+  \|u\| < \delta \right\} \\
+  & + \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
+  \delta} \|y\|^{d} \left| K_{h} (y) \right| \right] \cdot |g (x - u)|
+  \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
+\end{align*}
+The supremum in the above display exists and is finite for \(h\) sufficiently
+small by \eqref{eqn--conv-kernel-thin-tail-condition}.
+We know that \(\left| K_{h} (u) \right|\) has a finite integral by
+\Cref{asm--convl-kernel} \ref{asm--convl-kernel-L1}.
+Therefore, the a sufficient condition for the existence and finiteness of the
+integral in \eqref{eqn--convl-kernel-approximant} is integrability of \(|g (x -
+u)|\) since then \(|g (x - u)| \mathbf{1} \{\|u\| \geq \delta\}\) would be
+integrable.
+To that end, note that \(\int |g (x - u)| \; \mathrm{d} u = \int |g (v)| \;
+\mathrm{d} v < \infty\) by the change of variables \(v = x - u\).
+
+To prove the limit claim, we show \eqref{eqn--convl-kernel-conv-criteria} in
+\Cref{lem--convl-kernel-conv-criteria}.
+Given any \(\delta > 0\),
 \begin{align*}
   \int_{\|u\| \geq \delta} |g (x - u)| \left| K_{h} (u) \right| \; \mathrm{d} u
   =
