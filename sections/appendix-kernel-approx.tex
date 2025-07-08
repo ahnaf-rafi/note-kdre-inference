@@ -42,13 +42,13 @@ everywhere for each \(h \in (0, \infty)\), then \Cref{asm--convl-kernel}
 this case \(\overline{K}_{h} = 1\) for every \(h \in (0, \infty)\).
 \end{remark}
 
-\begin{theorem}
+\begin{lemma}
 \label{lem--convl-kernel-eg}
 Let \(K : \mathbb{R}^{d} \to \mathbb{R}\) be a Lebesgue-integrable function with
 \(\int K (u) \; \mathrm{d} u = 1\).
 Define \(K_{h} (u) := h^{- d} K (u / h)\).
 Then \(\left\{ K_{h} \right\}\) satisfies \Cref{asm--convl-kernel}.
-\end{theorem}
+\end{lemma}
 
 \begin{proof}[Proof of \Cref{lem--convl-kernel-eg}]
 By the change of variables \(v = u / h\),
@@ -70,7 +70,7 @@ For a measurable function \(g : \mathbb{R}^{d} \to \mathbb{R}\),
 consider the convolution based approximant
 \begin{equation}
   \begin{gathered}
-  g_{h} (x) := T_{h} [g] (x) := \int g (x - u) K_{h} (u) \; \mathrm{d} u \\
+  g_{h} (x) := T_{h} [g] (x) := \int g (x + u) K_{h} (u) \; \mathrm{d} u \\
   \text{for a family } \left\{ K_{h} \right\} \text{ satisfying
   \Cref{asm--convl-kernel}.}
   \end{gathered}
@@ -92,8 +92,8 @@ Then
 \begin{equation}
   \begin{split}
     \left| g_{h} (x) - g (x) \right| \leq
-    & \, \left\{ \sup_{\|u\| < \delta} |g (x - u) - g (x)| \right\} \cdot
-    \overline{K} + \int_{\|u\| \geq \delta} |g (x - u)| \cdot \left| K_{h} (u)
+    & \, \left\{ \sup_{\|u\| < \delta} |g (x + u) - g (x)| \right\} \cdot
+    \overline{K} + \int_{\|u\| \geq \delta} |g (x + u)| \cdot \left| K_{h} (u)
     \right| \; \mathrm{d} u \\
     & + |g (x)| \int_{\|u\| \geq \delta} \left| K_{h} (u) \right| \; \mathrm{d}
     u.
@@ -105,21 +105,21 @@ Then
 \begin{proof}[Proof of \Cref{thm--convl-kernel-point-error-bound}]
 By \(\int K_{h} (u) \; \mathrm{d} u = 1\),
 \begin{equation*}
-  \left| g_{h} (x) - g (x) \right| = \left| \int (g (x - u) - g (x)) K_{h} (u)
-  \; \mathrm{d} u \right| \leq \int |g (x - u) - g (x)| \left| K_{h} (u) \right|
+  \left| g_{h} (x) - g (x) \right| = \left| \int (g (x + u) - g (x)) K_{h} (u)
+  \; \mathrm{d} u \right| \leq \int |g (x + u) - g (x)| \left| K_{h} (u) \right|
   \; \mathrm{d} u.
 \end{equation*}
 Split the integral on the right:
 \begin{align*}
   \left| g_{h} (x) - g (x) \right| \leq
-  & \, \int_{\|u\| < \delta} |g (x - u) - g (x)| \left| K_{h} (u) \right| \;
+  & \, \int_{\|u\| < \delta} |g (x + u) - g (x)| \left| K_{h} (u) \right| \;
   \mathrm{d} u % \\ &
-  + \int_{\|u\| \geq \delta} |g (x - u) - g (x)| \left| K_{h} (u) \right| \;
+  + \int_{\|u\| \geq \delta} |g (x + u) - g (x)| \left| K_{h} (u) \right| \;
   \mathrm{d} u \\
   \leq
-  & \, \sup_{\|u\| < \delta} |g (x - u) - g (x)| \int \left| K_{h} (u) \right|
+  & \, \sup_{\|u\| < \delta} |g (x + u) - g (x)| \int \left| K_{h} (u) \right|
   \; \mathrm{d} u \\
-  & + \int_{\|u\| \geq \delta} |g (x - u)| \left| K_{h} (u) \right| \;
+  & + \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \;
   \mathrm{d} u + |g (x)| \int_{\|u\| \geq \delta} \left| K_{h} (u) \right| \;
   \mathrm{d} u.
 \end{align*}
@@ -138,7 +138,7 @@ finite for \(h > 0\) sufficiently small.
 \begin{equation}
   \text{If} \quad
   \forall \delta > 0, \lim_{h \to 0} \int_{\|u\| \geq \delta} |g
-  (x - u)| \left| K_{h} (u) \right| \; \mathrm{d} u = 0,
+  (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u = 0,
   \quad \text{then} \quad
   \lim_{h \to \infty} g_{h} (x) = g (x).
   \label{eqn--convl-kernel-conv-criteria}
@@ -180,7 +180,7 @@ Existence and finiteness of the integral in
 hypothesis of \(g\) being bounded.
 Furthermore by this hypothesis, given any \(\delta > 0\)
 \begin{equation*}
-  \int_{\|u\| \geq \delta} |g (x - u)| \left| K_{h} (u) \right| \; \mathrm{d} u
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
   \leq \sup_{y \in \mathbb{R}^{d}} |g (y)| \int_{\|u\| \geq \delta}
   \left| K_{h} (u) \right| \; \mathrm{d} u \to 0 \quad \text{as} \quad h \to 0.
 \end{equation*}
@@ -200,23 +200,25 @@ The family \(\left\{ K_{h} \right\}\) in
 \end{equation}
 \end{assumption}
 
-\begin{remark}
+\begin{lemma}
+\label{lem--convl-kernel-eg-thin-tail}
 Consider the function \(K\) and the associated family \(\left\{ K_{h} \right\}\)
-defined in \Cref{lem--convl-kernel-eg}.
-Condition \eqref{eqn--conv-kernel-thin-tail-condition} is satisfied if
+in \Cref{lem--convl-kernel-eg}.
 \begin{equation}
-  \lim_{\|y\| \to \infty} \|y\|^{d} K (y) = 0.
+  \text{If } \lim_{\|y\| \to \infty} \|y\|^{d} K (y) = 0, \text{ then } \left\{
+  K_{h} \right\} \text{ satisfies \Cref{asm--convl-kernel-conv-thin-tail}.}
   \label{eqn--conv-kernel-thin-tail-condition-1}
 \end{equation}
-To see this, note that
-\begin{align*}
-  \sup_{\|u\| \geq \delta} \|u\|^{d} K_{h} (u) = \sup_{\|u\| \geq \delta} \| u /
-  h \|^{d} K (u / h),
-\end{align*}
-and given any \(\delta > 0\), \eqref{eqn--conv-kernel-thin-tail-condition-1}
-ensures that the right hand side above can be made arbitrarily small when \(h
-\to 0\).
-\end{remark}
+\end{lemma}
+
+\begin{proof}[Proof of \Cref{lem--convl-kernel-eg-thin-tail}]
+Note that \(\sup_{\|u\| \geq \delta} \|u\|^{d} K_{h} (u) = \sup_{\|u\| \geq
+\delta} \| u / h \|^{d} K (u / h)\).
+Given any \(\delta > 0\), the premise in
+\eqref{eqn--conv-kernel-thin-tail-condition-1} ensures that the right hand side
+can be made arbitrarily small when \(h \to 0\).
+Thus \eqref{eqn--conv-kernel-thin-tail-condition} is satisfied.
+\end{proof}
 
 \begin{theorem}
 \label{thm--convl-kernel-conv-thin-tail}
@@ -233,35 +235,35 @@ Furthermore, \(\lim_{h \to 0} g_{h} (x) = g (x)\).
 For existence and finiteness of the integral in
 \eqref{eqn--convl-kernel-approximant}, first note that for any \(\delta > 0\),
 \begin{equation*}
-  |g (x - u)| \left| K_{h} (u) \right| \leq |g (x - u)| \left| K_{h} (u) \right|
-  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x - u)| \left| K_{h}
+  |g (x + u)| \left| K_{h} (u) \right| \leq |g (x + u)| \left| K_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left| K_{h}
   (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
 \end{equation*}
 Take any \(\varepsilon \in (0, \infty)\) and choose \(\delta :=
-\delta_{\varepsilon, x} \in (0, \infty)\) to ensure that \(|g (x - u) - g (x)| <
+\delta_{\varepsilon, x} \in (0, \infty)\) to ensure that \(|g (x + u) - g (x)| <
 \varepsilon\) for \(\|u\| < \delta\).
-Then, \(|g (x - u)| < |g (x)| + \varepsilon\) and combining this with the bound
+Then, \(|g (x + u)| < |g (x)| + \varepsilon\) and combining this with the bound
 in the above display,
 \begin{align*}
-  |g (x - u)| \left| K_{h} (u) \right| \leq
+  |g (x + u)| \left| K_{h} (u) \right| \leq
   & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right|
-  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x - u)| \left| K_{h}
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left| K_{h}
   (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
   & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
   \|u\| < \delta \right\} \\
-  & + \frac{|g (x - u)|}{\|u\|^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
+  & + \frac{|g (x + u)|}{\|u\|^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
   \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
   & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
   \|u\| < \delta \right\} \\
-  & + \frac{|g (x - u)|}{\delta^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
+  & + \frac{|g (x + u)|}{\delta^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
   \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
   & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
   \|u\| < \delta \right\} \\
   & + \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
-  \delta} \|y\|^{d} \left| K_{h} (y) \right| \right] \cdot |g (x - u)|
+  \delta} \|y\|^{d} \left| K_{h} (y) \right| \right] \cdot |g (x + u)|
   \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
 \end{align*}
 The supremum in the above display exists and is finite for \(h\) sufficiently
@@ -269,37 +271,37 @@ small by \eqref{eqn--conv-kernel-thin-tail-condition}.
 We know that \(\left| K_{h} (u) \right|\) has a finite integral by
 \Cref{asm--convl-kernel} \ref{asm--convl-kernel-L1}.
 Therefore, the a sufficient condition for the existence and finiteness of the
-integral in \eqref{eqn--convl-kernel-approximant} is integrability of \(|g (x -
-u)|\) since then \(|g (x - u)| \mathbf{1} \{\|u\| \geq \delta\}\) would be
+integral in \eqref{eqn--convl-kernel-approximant} is integrability of \(|g (x +
+u)|\) since then \(|g (x + u)| \mathbf{1} \{\|u\| \geq \delta\}\) would be
 integrable.
-To that end, note that \(\int |g (x - u)| \; \mathrm{d} u = \int |g (v)| \;
-\mathrm{d} v < \infty\) by the change of variables \(v = x - u\).
+To that end, note that \(\int |g (x + u)| \; \mathrm{d} u = \int |g (v)| \;
+\mathrm{d} v < \infty\) by the change of variables \(v = x + u\).
 
 To prove the limit claim, we show \eqref{eqn--convl-kernel-conv-criteria} in
 \Cref{lem--convl-kernel-conv-criteria}.
 Given any \(\delta > 0\),
 \begin{align*}
-  \int_{\|u\| \geq \delta} |g (x - u)| \left| K_{h} (u) \right| \; \mathrm{d} u
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
   =
-  & \, \int_{\|u\| \geq \delta} \frac{|g (x - u)|}{\|u\|^{d}} \cdot \|u\|^{d}
+  & \, \int_{\|u\| \geq \delta} \frac{|g (x + u)|}{\|u\|^{d}} \cdot \|u\|^{d}
   \cdot \left| K_{h} (u) \right| \; \mathrm{d} u \\
   =
   & \, \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq \delta} \|y\|^{d} \cdot
-  \left| K_{h} (y) \right| \right] \cdot \int_{\|u\| \geq \delta} \frac{|g (x -
+  \left| K_{h} (y) \right| \right] \cdot \int_{\|u\| \geq \delta} \frac{|g (x +
   u)|}{\|u\|^{d}} \; \mathrm{d} u \\
   \leq
   & \, \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
   \delta} \|y\|^{d} \cdot \left| K_{h} (y) \right| \right] \cdot \int_{\|u\|
-  \geq \delta} |g (x - u)| \; \mathrm{d} u.
+  \geq \delta} |g (x + u)| \; \mathrm{d} u.
 \end{align*}
 In addition,
 \begin{equation*}
-  \int_{\|u\| \geq \delta} |g (x - u)| \; \mathrm{d} u = \int_{\|x - v\| \geq
+  \int_{\|u\| \geq \delta} |g (x + u)| \; \mathrm{d} u = \int_{\|x - v\| \geq
   \delta} |g (v)| \; \mathrm{d} v \leq \int |g (v)| \; \mathrm{d} v.
 \end{equation*}
 Combining both bounds,
 \begin{equation*}
-  \int_{\|u\| \geq \delta} |g (x - u)| \left| K_{h} (u) \right| \; \mathrm{d} u
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
   \leq \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
   \delta} \|y\|^{d} \cdot \left| K_{h} (y) \right| \right] \cdot \int |g (v)| \;
   \mathrm{d} v.
@@ -315,5 +317,6 @@ desired.
 %%% mode: LaTeX
 %%% TeX-master: "../note-kdre-inference"
 %%% End:
+
 
 % LocalWords:  cdf ecdf

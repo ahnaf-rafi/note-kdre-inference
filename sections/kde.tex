@@ -1,0 +1,307 @@
+%! TEX root = ../note-kdre-inference.tex
+
+\section{Density Estimation}
+
+\begin{assumption}
+\label{asm--kde-dgp}
+\(X, X_{1}, \dots, X_{n}\) are iid random \(\mathbb{R}^{d}\)-vectors all with
+Lebesgue density \(f\).
+\end{assumption}
+
+\begin{assumption}
+\label{asm--kernel}
+\(K : \mathbb{R}^{d} \to \mathbb{R}\) be a Lebesgue-integrable function such
+that
+\begin{enumerate}[label=(\roman*)]
+  \item
+    \label{asm--kernel-unit-integral}
+    \(\int K (u) \; \mathrm{d} u = 1\)
+  \item \label{asm--kernel-thin-tails}
+    \(\lim_{\|u\| \to \infty} \|u\|^{d} K (u) = 0\).
+\end{enumerate}
+\end{assumption}
+
+For a function \(K : \mathbb{R}^{d} \to \mathbb{R}\) satisfying
+\Cref{asm--kernel}, define
+\begin{equation}
+  K_{h} (u) := \frac{1}{h^{d}} K \left( \frac{u}{h} \right).
+  \label{eqn--kernel-Kh}
+\end{equation}
+The kernel density estimator and its mean are
+\begin{equation}
+  \widehat{f}_{n, h} (x) = \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x
+  \right) \quad \text{and} \quad
+  f_{h} (x) = \E \left[ K_{h} (X - x) \right] = \int f (x + u) K_{h} (u) \;
+  \mathrm{d} u.
+  \label{eqn--kde-and-mean}
+\end{equation}
+Note that the final equality in \eqref{eqn--kde-and-mean} follows from the usual
+change of variables formula.
+
+\begin{lemma}
+\label{lem--kernel-polynomial-mean}
+Let \(h, p \in (0, \infty)\) and \(x \in \mathbb{R}^{d}\).
+Let \(K : \mathbb{R}^{d} \to \mathbb{R}\) and \(g : \mathbb{R}^{d} \to
+\mathbb{R}\) be measurable functions such that
+\(\int |g (x + v h)| |K (v)|^{p} \; \mathrm{d} v < \infty\).
+Then
+\begin{equation}
+  \int g (x + u) K (u / h)^{p} \; \mathrm{d} u = h^{d} \int g (x + v h) K
+  (v)^{p} \; \mathrm{d} v.
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof of \Cref{lem--kernel-polynomial-mean}]
+Use the change of variables \(v = u / h\).
+\end{proof}
+
+Note that
+\begin{equation*}
+  \E \left[ K ((X - x) / h)^{p} \right] = \int f (\xi) K ((\xi - x) / h)^{p} \;
+  \mathrm{d} \xi
+\end{equation*}
+and by the change of variables \(u = (\xi - x) / h\), so that \(\xi = x + u h\),
+\begin{equation*}
+  \E \left[ K ((X - x) / h)^{p} \right] = h^{d} \int f (x + u h) K (u)^{p} \;
+  \mathrm{d} u.
+\end{equation*}
+Therefore,
+\begin{align*}
+  \E \left[ K_{h} (X - x)^{p} \right] =
+  & \, \frac{1}{h^{d p}} = \E \left[ K ((X - x) / h)^{p} \right] =
+  \frac{h^{d}}{h^{d p}} \int f (x + u h) K (u)^{p} \; \mathrm{d} u \\
+  =
+  & \, \frac{1}{h^{d (p - 1)}} \int f (x + u h) K (u)^{p} \; \mathrm{d} u.
+\end{align*}
+
+Let
+\begin{equation*}
+  c_{n, h}^{2} = n \Var \left[ K_{h} (X - x) \right] \quad b_{n, h}^{2 + v} = n
+  \E \left[ \left| K_{h} (X - x) - \E \left[ K_{h} (X - x) \right] \right|^{2 +
+  v} \right].
+\end{equation*}
+Then
+\begin{align*}
+  c_{n, h}^{2} =
+  & \, n \left( \E \left[ K_{h} (X - x)^{2} \right] - \E \left[ K_{h} (X - x)
+  \right]^{2} \right) \\
+  =
+  & \, n \left( \frac{1}{h^{d}} \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
+  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \\
+  =
+  & \, \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O
+  \left( h^{d} \right) \right).
+\end{align*}
+For any real numbers \(a, b, p\) with \(p \geq 1\), \(|a + b|^{p} \leq 2^{p - 1}
+\left( |a|^{p} + |b|^{p} \right)\).
+Therefore,
+\begin{align*}
+  b_{n, h}^{2 + v} \leq
+  & \, 2^{1 + v} n \left( \E \left[ \left| K_{h} (X - x) \right|^{2 + v} \right]
+  + \left| \E \left[ K_{h} (X - x) \right] \right|^{2 + v} \right) \\
+  =
+  & \, 2^{1 + v} n \left( \frac{1}{h^{d (1 + v)}} \int f (x + u h) |K (u)|^{2 +
+  v} \; \mathrm{d} u + \left| \int f (x + u h) K (u) \; \mathrm{d} u \right|^{2
+  + v} \right) \\
+  =
+  & \, \frac{2^{1 + v} n}{h^{d (1 + v)}} \left( \int f (x + u h) |K (u)|^{2 + v}
+  \; \mathrm{d} u + O \left( h^{d (1 + v)} \right) \right).
+\end{align*}
+Then,
+\begin{align*}
+  \frac{b_{n, h}^{2 + v}}{c_{n, h}^{2 + v}} \leq
+  & \, \frac{\frac{2^{1 + v} n}{h^{d (1 + v)}} \left( \int f (x + u h) |K
+  (u)|^{2 + v} \; \mathrm{d} u + O \left( h^{d (1 + v)} \right) \right)}{\left(
+  \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O \left(
+  h^{d} \right) \right) \right)^{1 + (v / 2)}} \\
+  =
+  & \, \frac{1}{\left( n h^{d} \right)^{v / 2}} \cdot \frac{2^{1 + v} \left(
+  \int f (x + u h) |K (u)|^{2 + v} \; \mathrm{d} u + O \left( h^{d (1 + v)}
+  \right) \right)}{\left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O \left(
+  h^{d} \right) \right)^{1 + (v / 2)}}
+\end{align*}
+So Liapunov's condition holds as long as \(\lim 1 / \left( n h^{d} \right) =
+0\).
+
+\begin{theorem}
+\label{thm--kde-asymptotic-normality}
+Let \(\left\{ h_{n} \right\}\) be a real sequence such that \(h_{n} > 0\) for
+every \(n \in \mathbb{N}\), \(\lim_{n \to \infty} h_{n} = 0\), and \(\lim_{n \to
+\infty} 1 / \left( n h_{n}^{d} \right) = 0\).
+Let \(K\) be a function satisfying \Cref{asm--convl-kernel} and let the
+probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x \in
+\mathbb{R}^{d}\).
+Suppose that for some \(v > 0\), \(\E \left[ \left| K \left( (X - x) / h_{n}
+\right) \right|^{2 + v} \right] < \infty\) for all \(n \in \mathbb{N}\).
+Then
+\begin{equation*}
+  \sqrt{n h_{n}^{d}} \left( \widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) \right)
+  \rightsquigarrow \N \left( 0, f (x) \int K (u)^{2} \; \mathrm{d} u \right).
+\end{equation*}
+\end{theorem}
+
+\begin{proof}[Proof of \Cref{thm--kde-asymptotic-normality}]
+Define
+\begin{equation*}
+  W_{i, h} (x) = K_{h} \left( X_{i} - x \right) - \E \left[ K_{h} (X - x)
+  \right], \quad \text{and} \quad c_{n, h} (x)^{2} = \sum_{i = 1}^{n} \Var
+  \left[ W_{i, h} (x) \right].
+\end{equation*}
+Since \(W_{1, h} (x), \dots, W_{n, h} (x)\) are iid,
+\begin{align*}
+  c_{n, h} (x)^{2} =
+  & \, n \left( \E \left[ K_{h} \left( X - x \right)^{2} \right] - \E \left[
+  K_{h} (X - x) \right]^{2} \right) \\
+  =
+  & \, n \left( \frac{1}{h^{d}} \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
+  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \\
+  =
+  & \, \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
+  h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right).
+\end{align*}
+Hence,
+\begin{equation*}
+  \frac{c_{n, h} (x)^{2} h^{d}}{n} = \int f (x + u h) K (u)^{2} \; \mathrm{d} u
+  - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2}
+\end{equation*}
+By \(h = h_{n} \to 0\) and dominated convergence,
+\begin{equation*}
+  \frac{c_{n, h} (x)^{2} h^{d}}{n} \to f (x) \int K (u)^{2} \; \mathrm{d} u.
+\end{equation*}
+Since \(1 / \left( n h^{d} \right) \to 0\), by Liapunov's CLT
+\begin{align*}
+  \sqrt{n h^{d}} \left( \widehat{f}_{n, h} (x) - f_{h} (x) \right) =
+  & \, \sqrt{\frac{h^{d}}{n}} \cdot \sum_{i = 1}^{n} W_{i, h} (x) \\
+  =
+  & \, \sqrt{\frac{c_{n, h} (x)^{2} h^{d}}{n}} \cdot \frac{\sum_{i = 1}^{n}
+  W_{i, h} (x)}{c_{n, h} (x)} \\
+  \rightsquigarrow
+  & \, \sqrt{f (x) \int K (u)^{2} \; \mathrm{d} u} \cdot \N (0, 1) \\
+  =
+  & \, \N \left( 0, f (x) \int K (u)^{2} \; \mathrm{d} u \right).
+\end{align*}
+\end{proof}
+
+Let \(\widehat{V}_{n, h} (x)\) and \(V_{h} (x)\) be defined by
+\begin{equation}
+  \begin{split}
+  \widehat{V}_{n, h} (x) =
+  & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} - \left(
+  \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right) \right)^{2} \\
+  =
+  & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} -
+  \widehat{f}_{n, h} (x)^{2}, \\
+  \text{and} \quad
+  V_{h} (x) =
+  & \, \E \left[ K_{h} (X - x)^{2} \right] - \E \left[ K_{h} (X - x) \right]^{2}
+  = \E \left[ K_{h} (X - x)^{2} \right] - f_{h} (x)^{2}
+  \end{split}
+\end{equation}
+Furthermore, set
+\begin{equation*}
+  \widehat{Z}_{n} (x) = \frac{\widehat{f}_{n, h_{n}} (x) - f_{h}
+  (x)}{\sqrt{\widehat{V}_{n, h_{n}} (x) / n}} \quad \text{and} \quad Z_{n} (x) =
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h} (x)}{\sqrt{V_{h_{n}} (x) / n}}.
+\end{equation*}
+We wish to show that
+\begin{equation*}
+  \text{If }
+  \lim_{n \to \infty} \max \left\{ h_{n}, \frac{1}{n h_{n}^{d}} \right\} = 0,
+  \text{ then } \widehat{Z}_{n} (x) \rightsquigarrow \N (0, 1).
+\end{equation*}
+But we know that if the premise of the above condition holds, that \(Z_{n} (x)
+\rightsquigarrow \N (0, 1)\) and so, by Slutsky's Theorem, we are left to show
+that
+\begin{equation*}
+  \frac{\widehat{V}_{n, h} (x)}{V_{h} (x)} \overset{\mathrm{p}}{\to} 1,
+\end{equation*}
+or equivalently that
+\begin{equation*}
+  \widehat{V}_{n, h} (x) - V_{h} (x) = o_{\mathrm{p}} \left( V_{h} (x) \right).
+\end{equation*}
+To that end,
+\begin{equation*}
+  \widehat{V}_{n, h} (x) - V_{h} (x) = \frac{1}{n} \sum_{i = 1}^{n} \left\{
+  K_{h} \left( X_{i} - x \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right]
+  \right\} + f_{h} (x)^{2} - \widehat{f}_{n, h} (x)^{2}
+\end{equation*}
+Hence, we can show the following two conditions separately:
+\begin{align}
+  \frac{1}{n} \sum_{i = 1}^{n} \left\{
+  K_{h} \left( X_{i} - x \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right]
+  \right\} =
+  & \,  o_{\mathrm{p}} \left( V_{h} (x) \right) \\
+  \widehat{f}_{n, h} (x)^{2} - f_{h} (x)^{2} =
+  & \, o_{\mathrm{p}} \left( V_{h} (x)
+  \right)
+\end{align}
+Start with the latter and write
+\begin{equation*}
+  \widehat{f}_{n, h} (x)^{2} - f_{h} (x)^{2} = \left( \widehat{f}_{n, h} (x) +
+  f_{h} (x) \right) \left( \widehat{f}_{n, h} (x) - f_{h} (x) \right).
+\end{equation*}
+Recall that \(\widehat{f}_{n, h} (x) - f_{h} (x) = O_{p} \left( \sqrt{V_{h} (x)
+/ n} \right)\).
+A sufficient condition is then \(1 / n = o \left( V_{h} (x) \right)\).
+To show this, recall that
+\begin{equation*}
+  V_{h} (x) = \frac{1}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u
+  - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right).
+\end{equation*}
+So, as long as \(f (x) > 0\),
+\begin{equation*}
+  \frac{1}{n V_{h} (x)} = \frac{h^{d}}{n \left( \int f (x + u h) K
+  (u)^{2} \; \mathrm{d} u - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u
+  \right]^{2} \right)} \to 0.
+\end{equation*}
+
+Now set
+\begin{equation*}
+  D_{n, h} (x) = \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i} - x
+  \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right] \right\}.
+\end{equation*}
+We know that \(D_{n, h} (x) = O_{\mathrm{p}} \left( \Var \left[ D_{n, h} (x)
+\right]^{1 / 2} \right)\) and so we wish to show that
+\begin{equation*}
+  \Var \left[ D_{n, h} (x) \right]^{1 / 2} = o \left( V_{h} (x) \right) \text{
+  or equivalently } \Var \left[ D_{n, h} (x) \right] = o \left( V_{h}
+  (x)^{2} \right).
+\end{equation*}
+But
+\begin{align*}
+  \Var \left[ D_{n, h} (x) \right] =
+  & \, \frac{\E \left[ K_{h} (X - x)^{4} \right] - \E \left[ K_{h} (X - x)^{2}
+  \right]^{2}}{n} = \frac{\E \left[ K_{h} (X - x)^{4} \right]}{n} - \frac{O
+  \left( V_{h} (x)^{2} \right)}{n} \\
+  =
+  & \, \frac{\E \left[ K_{h} (X - x)^{4} \right]}{n} - o \left( V_{h} (x)^{2}
+  \right) \\
+  =
+  & \, \frac{\frac{1}{h^{3 d}} \int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n} -
+  o \left( V_{h} (x)^{2} \right)
+\end{align*}
+We are done if the first term is \(o \left( V_{h} (x)^{2} \right)\)
+\begin{align*}
+  \frac{\frac{\frac{1}{h^{3 d}} \int f (x + u h) K (u)^{4} \; \mathrm{d}
+  u}{n}}{V_{h} (x)^{2}} =
+  & \, \frac{\int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n h^{3 d} V_{h}
+  (x)^{2}} \\
+  =
+  & \, \frac{\int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n h^{3 d} \left(
+  \frac{1}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d}
+  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \right)^{2}}
+  \\
+  =
+  & \, \frac{h^{d} \int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n \left(
+  \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d}
+  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \right)^{2}}
+  \\
+  =
+  & \, o (1).
+\end{align*}
+
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../note-kdre-inference"
+%%% End:
