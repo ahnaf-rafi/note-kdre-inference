@@ -1,4 +1,4 @@
-%! TEX root = ../note-kdre-inference.tex
+% ! TEX note = ../root-kdre-inference.tex
 
 \section{Density Estimation}
 
@@ -10,9 +10,12 @@ Lebesgue density \(f\).
 
 \begin{assumption}
 \label{asm--kernel}
-\(K : \mathbb{R}^{d} \to \mathbb{R}\) be a Lebesgue-integrable function such
-that
+\(K : \mathbb{R}^{d} \to \mathbb{R}\) is a measurable function such that
 \begin{enumerate}[label=(\roman*)]
+  \item
+    \label{asm--kernel-integrability}
+    \(\int |K (u)|^{p} \; \mathrm{d} u < \infty\) for each \(p \in \{1, 2,
+    4\}\).
   \item
     \label{asm--kernel-unit-integral}
     \(\int K (u) \; \mathrm{d} u = 1\)
@@ -21,8 +24,26 @@ that
 \end{enumerate}
 \end{assumption}
 
-For a function \(K : \mathbb{R}^{d} \to \mathbb{R}\) satisfying
-\Cref{asm--kernel}, define
+\begin{assumption}
+\label{asm--bandwidth}
+\(\left\{ h_{n} \right\}\) is a real sequence such that \(h_{n} > 0\) for every
+\(n \in \mathbb{N}\), \(\lim_{n \to \infty} h_{n} = 0\), and \(\lim_{n \to
+\infty} 1 / \left( n h_{n}^{d} \right) = 0\).
+\end{assumption}
+
+\begin{remark}
+It can be shown that if \(K\) is continuous, then
+\Cref{asm--kernel} \ref{asm--kernel-integrability} for \(p = 1\) and
+\ref{asm--kernel-thin-tails} imply that \(K\) is bounded.
+Then \Cref{asm--kernel} \ref{asm--kernel-integrability} for \(p \in (1,
+\infty)\) are immediately implied since \(|K (u)|^{p} \leq \left( \sup_{v \in
+\mathbb{R}^{d}} |K (v)| \right)^{p - 1}
+|K (u)|\) for every \(u \in \mathbb{R}^{d}\).
+For our purposes, it will be sufficient to assume \Cref{asm--kernel}
+\ref{asm--kernel-integrability} for \(p \in \{1, 2, 4\}\).
+\end{remark}
+
+For \(K\) satisfying \Cref{asm--kernel}, define
 \begin{equation}
   K_{h} (u) := \frac{1}{h^{d}} K \left( \frac{u}{h} \right).
   \label{eqn--kernel-Kh}
@@ -30,187 +51,163 @@ For a function \(K : \mathbb{R}^{d} \to \mathbb{R}\) satisfying
 The kernel density estimator and its mean are
 \begin{equation}
   \widehat{f}_{n, h} (x) = \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x
-  \right) \quad \text{and} \quad
-  f_{h} (x) = \E \left[ K_{h} (X - x) \right] = \int f (x + u) K_{h} (u) \;
-  \mathrm{d} u.
+  \right) \text{ and } f_{h} (x) = \E \left[ K_{h} (X - x) \right] = \int f (x +
+  u) K_{h} (u) \; \mathrm{d} u.
   \label{eqn--kde-and-mean}
 \end{equation}
 Note that the final equality in \eqref{eqn--kde-and-mean} follows from the usual
 change of variables formula.
-
-\begin{lemma}
-\label{lem--kernel-polynomial-mean}
-Let \(h, p \in (0, \infty)\) and \(x \in \mathbb{R}^{d}\).
-Let \(K : \mathbb{R}^{d} \to \mathbb{R}\) and \(g : \mathbb{R}^{d} \to
-\mathbb{R}\) be measurable functions such that
-\(\int |g (x + v h)| |K (v)|^{p} \; \mathrm{d} v < \infty\).
-Then
-\begin{equation}
-  \int g (x + u) K (u / h)^{p} \; \mathrm{d} u = h^{d} \int g (x + v h) K
-  (v)^{p} \; \mathrm{d} v.
-\end{equation}
-\end{lemma}
-
-\begin{proof}[Proof of \Cref{lem--kernel-polynomial-mean}]
-Use the change of variables \(v = u / h\).
-\end{proof}
-
-Note that
-\begin{equation*}
-  \E \left[ K ((X - x) / h)^{p} \right] = \int f (\xi) K ((\xi - x) / h)^{p} \;
-  \mathrm{d} \xi
-\end{equation*}
-and by the change of variables \(u = (\xi - x) / h\), so that \(\xi = x + u h\),
-\begin{equation*}
-  \E \left[ K ((X - x) / h)^{p} \right] = h^{d} \int f (x + u h) K (u)^{p} \;
-  \mathrm{d} u.
-\end{equation*}
-Therefore,
-\begin{align*}
-  \E \left[ K_{h} (X - x)^{p} \right] =
-  & \, \frac{1}{h^{d p}} = \E \left[ K ((X - x) / h)^{p} \right] =
-  \frac{h^{d}}{h^{d p}} \int f (x + u h) K (u)^{p} \; \mathrm{d} u \\
-  =
-  & \, \frac{1}{h^{d (p - 1)}} \int f (x + u h) K (u)^{p} \; \mathrm{d} u.
-\end{align*}
-
-Let
-\begin{equation*}
-  c_{n, h}^{2} = n \Var \left[ K_{h} (X - x) \right] \quad b_{n, h}^{2 + v} = n
-  \E \left[ \left| K_{h} (X - x) - \E \left[ K_{h} (X - x) \right] \right|^{2 +
-  v} \right].
-\end{equation*}
-Then
-\begin{align*}
-  c_{n, h}^{2} =
-  & \, n \left( \E \left[ K_{h} (X - x)^{2} \right] - \E \left[ K_{h} (X - x)
-  \right]^{2} \right) \\
-  =
-  & \, n \left( \frac{1}{h^{d}} \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
-  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \\
-  =
-  & \, \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O
-  \left( h^{d} \right) \right).
-\end{align*}
-For any real numbers \(a, b, p\) with \(p \geq 1\), \(|a + b|^{p} \leq 2^{p - 1}
-\left( |a|^{p} + |b|^{p} \right)\).
-Therefore,
-\begin{align*}
-  b_{n, h}^{2 + v} \leq
-  & \, 2^{1 + v} n \left( \E \left[ \left| K_{h} (X - x) \right|^{2 + v} \right]
-  + \left| \E \left[ K_{h} (X - x) \right] \right|^{2 + v} \right) \\
-  =
-  & \, 2^{1 + v} n \left( \frac{1}{h^{d (1 + v)}} \int f (x + u h) |K (u)|^{2 +
-  v} \; \mathrm{d} u + \left| \int f (x + u h) K (u) \; \mathrm{d} u \right|^{2
-  + v} \right) \\
-  =
-  & \, \frac{2^{1 + v} n}{h^{d (1 + v)}} \left( \int f (x + u h) |K (u)|^{2 + v}
-  \; \mathrm{d} u + O \left( h^{d (1 + v)} \right) \right).
-\end{align*}
-Then,
-\begin{align*}
-  \frac{b_{n, h}^{2 + v}}{c_{n, h}^{2 + v}} \leq
-  & \, \frac{\frac{2^{1 + v} n}{h^{d (1 + v)}} \left( \int f (x + u h) |K
-  (u)|^{2 + v} \; \mathrm{d} u + O \left( h^{d (1 + v)} \right) \right)}{\left(
-  \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O \left(
-  h^{d} \right) \right) \right)^{1 + (v / 2)}} \\
-  =
-  & \, \frac{1}{\left( n h^{d} \right)^{v / 2}} \cdot \frac{2^{1 + v} \left(
-  \int f (x + u h) |K (u)|^{2 + v} \; \mathrm{d} u + O \left( h^{d (1 + v)}
-  \right) \right)}{\left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u + O \left(
-  h^{d} \right) \right)^{1 + (v / 2)}}
-\end{align*}
-So Liapunov's condition holds as long as \(\lim 1 / \left( n h^{d} \right) =
-0\).
+The following is a usual statement of consistency and asymptotic normality for
+\(\widehat{f}_{n, h_{n}} (x)\).
 
 \begin{theorem}
-\label{thm--kde-asymptotic-normality}
-Let \(\left\{ h_{n} \right\}\) be a real sequence such that \(h_{n} > 0\) for
-every \(n \in \mathbb{N}\), \(\lim_{n \to \infty} h_{n} = 0\), and \(\lim_{n \to
-\infty} 1 / \left( n h_{n}^{d} \right) = 0\).
-Let \(K\) be a function satisfying \Cref{asm--convl-kernel} and let the
-probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x \in
-\mathbb{R}^{d}\).
-Suppose that for some \(v > 0\), \(\E \left[ \left| K \left( (X - x) / h_{n}
-\right) \right|^{2 + v} \right] < \infty\) for all \(n \in \mathbb{N}\).
-Then
-\begin{equation*}
+\label{thm--kde-asymptotic-normality-usual}
+Let the probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x
+\in \mathbb{R}^{d}\) and satisfy \(f (x) > 0\), let \(K\) be a function
+satisfying \Cref{asm--kernel}, and let the sequence \(\left\{ h_{n} \right\}\)
+satisfy \Cref{asm--bandwidth}.
+Then as \(n \to \infty\),
+\begin{equation}
+  \widehat{f}_{n, h_{n}} (x) \overset{\mathrm{p}}{\to} f (x) \quad \text{and}
+  \quad
   \sqrt{n h_{n}^{d}} \left( \widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) \right)
   \rightsquigarrow \N \left( 0, f (x) \int K (u)^{2} \; \mathrm{d} u \right).
-\end{equation*}
+  \label{eqn--kde-asymptotic-normality-usual}
+\end{equation}
 \end{theorem}
 
-\begin{proof}[Proof of \Cref{thm--kde-asymptotic-normality}]
-Define
-\begin{equation*}
-  W_{i, h} (x) = K_{h} \left( X_{i} - x \right) - \E \left[ K_{h} (X - x)
-  \right], \quad \text{and} \quad c_{n, h} (x)^{2} = \sum_{i = 1}^{n} \Var
-  \left[ W_{i, h} (x) \right].
-\end{equation*}
-Since \(W_{1, h} (x), \dots, W_{n, h} (x)\) are iid,
-\begin{align*}
-  c_{n, h} (x)^{2} =
-  & \, n \left( \E \left[ K_{h} \left( X - x \right)^{2} \right] - \E \left[
-  K_{h} (X - x) \right]^{2} \right) \\
-  =
-  & \, n \left( \frac{1}{h^{d}} \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
-  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \\
-  =
-  & \, \frac{n}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u -
-  h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right).
-\end{align*}
-Hence,
-\begin{equation*}
-  \frac{c_{n, h} (x)^{2} h^{d}}{n} = \int f (x + u h) K (u)^{2} \; \mathrm{d} u
-  - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2}
-\end{equation*}
-By \(h = h_{n} \to 0\) and dominated convergence,
-\begin{equation*}
-  \frac{c_{n, h} (x)^{2} h^{d}}{n} \to f (x) \int K (u)^{2} \; \mathrm{d} u.
-\end{equation*}
-Since \(1 / \left( n h^{d} \right) \to 0\), by Liapunov's CLT
-\begin{align*}
-  \sqrt{n h^{d}} \left( \widehat{f}_{n, h} (x) - f_{h} (x) \right) =
-  & \, \sqrt{\frac{h^{d}}{n}} \cdot \sum_{i = 1}^{n} W_{i, h} (x) \\
-  =
-  & \, \sqrt{\frac{c_{n, h} (x)^{2} h^{d}}{n}} \cdot \frac{\sum_{i = 1}^{n}
-  W_{i, h} (x)}{c_{n, h} (x)} \\
-  \rightsquigarrow
-  & \, \sqrt{f (x) \int K (u)^{2} \; \mathrm{d} u} \cdot \N (0, 1) \\
-  =
-  & \, \N \left( 0, f (x) \int K (u)^{2} \; \mathrm{d} u \right).
-\end{align*}
-\end{proof}
+In this note, we will avoid talking about asymptotic normality of
+\(\widehat{f}_{n, h_{n}} - f (x)\) since the bias term \(f_{h_{n}} (x) - f (x)\)
+is typically non-zero and requires slightly delicate handling after scaling by
+\(\sqrt{n h_{n}^{d}}\).
+Instead, we focus on the centered quantity \(\widehat{f}_{n, h_{n}} - f_{h_{n}}
+(x)\) to focus only on asymptotic normality and standard error estimation.
+To that end, the typical prescription for inference then based on an application
+of Slutsky's Theorem and direct use of
+\eqref{eqn--kde-asymptotic-normality-usual}: under the
+conditions of \Cref{thm--kde-asymptotic-normality-usual},
+\begin{equation}
+  \begin{gathered}
+    \widetilde{t}_{n} = \frac{\sqrt{n h_{n}^{d}}\left( \widehat{f}_{n, h_{n}}
+    (x) - f_{h_{n}} (x) \right)}{\sqrt{\widetilde{V}_{n, h_{n}} (x)}}
+    \rightsquigarrow \N (0, 1), \\
+    \text{where} \quad \widetilde{V}_{n, h_{n}} (x) = \widehat{f}_{n, h_{n}} (x)
+    \int K (u)^{2} \; \mathrm{d} u.
+  \end{gathered}
+  \label{eqn--kde-asymptotic-normality-tstat-usual}
+\end{equation}
 
-Let \(\widehat{V}_{n, h} (x)\) and \(V_{h} (x)\) be defined by
+In this note, we follow an alternative route.
+In particular, \(\widehat{f}_{n, h}\) is a sample average and so,
+we might suspect that usual \(t\)-statistic is asymptotically standard normal.
+A key object in our derivations will be the centered kernel sum
+\begin{equation}
+  S_{n, h} (x) = \sum_{i = 1}^{n} \left\{ K \left( \frac{X_{i} - x}{h} \right) -
+  \E \left[ K \left( \frac{X - x}{h} \right) \right] \right\}.
+  \label{eqn--kernel-sum}
+\end{equation}
+Note that
+\begin{equation*}
+  \widehat{f}_{n, h} (x) - f_{h} (x) = \frac{S_{n, h} (x)}{n h^{d}}.
+\end{equation*}
+Clearly since \(X_{i} \overset{\mathrm{iid}}{\sim} X\) (\Cref{asm--kde-dgp}),
+\begin{equation}
+  \E \left[ S_{n, h} (x) \right] = 0 \quad \text{and} \quad \mathrm{Var}
+  \left[ S_{n, h} (x) \right] = n \Sigma_{h} (x),
+\end{equation}
+where by \eqref{eqn--convl-kernel-eg-thin-tail} in
+\Cref{thm--convl-kernel-eg-thin-tail},
 \begin{equation}
   \begin{split}
-  \widehat{V}_{n, h} (x) =
-  & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} - \left(
-  \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right) \right)^{2} \\
-  =
-  & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} -
-  \widehat{f}_{n, h} (x)^{2}, \\
-  \text{and} \quad
-  V_{h} (x) =
-  & \, \E \left[ K_{h} (X - x)^{2} \right] - \E \left[ K_{h} (X - x) \right]^{2}
-  = \E \left[ K_{h} (X - x)^{2} \right] - f_{h} (x)^{2}
+    \Sigma_{h} (x) :=
+    & \, \mathrm{Var} \left[ K \left( \frac{X - x}{h} \right) \right] = \E
+    \left[ K \left( \frac{X - x}{h} \right)^{2} \right] - \E \left[ K \left(
+    \frac{X - x}{h} \right) \right]^{2} \\
+    =
+    & \, h^{d} \int f (x + u h) K (u)^{2} \; \mathrm{d} u
+    - \left( h^{d} \int f (x + u h) K (u) \; \mathrm{d} u \right)^{2}.
   \end{split}
 \end{equation}
-Furthermore, set
+The following result shows that \(S_{n, h_{n}} (x) / \sqrt{n \Sigma_{h_{n}}
+(x)}\) is asymptotically standard normal.
+The key technical tool is Liapunov's Central Limit Theorem (see for example
+\citet[Theorem 27.3, p. 362]{1995billingsleyProbabilityMeasure}
+or \citet[Theorem 18 in Section 4 of Chapter III,
+p. 51]{1984pollardConvergenceStochasticProcesses}).
+
+\begin{theorem}
+\label{thm--kernel-sum-asymptotic-normality}
+Let the probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x
+\in \mathbb{R}^{d}\) and satisfy \(f (x) > 0\), let \(K\) be a function
+satisfying \Cref{asm--kernel}, and let the sequence \(\left\{ h_{n} \right\}\)
+satisfy \Cref{asm--bandwidth}.
+Then as \(n \to \infty\),
+\begin{equation}
+  \frac{S_{n, h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}} \rightsquigarrow \N (0,
+  1).
+  \label{eqn--kernel-sum-asymptotic-normality}
+\end{equation}
+\end{theorem}
+
+Define
 \begin{equation*}
-  \widehat{Z}_{n} (x) = \frac{\widehat{f}_{n, h_{n}} (x) - f_{h}
-  (x)}{\sqrt{\widehat{V}_{n, h_{n}} (x) / n}} \quad \text{and} \quad Z_{n} (x) =
-  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h} (x)}{\sqrt{V_{h_{n}} (x) / n}}.
+  \begin{split}
+    V_{h} (x) = \Var \left[ K_{h} (X - x) \right] =
+    & \, \E \left[ K_{h} (X - x)^{2} \right] - \E \left[ K_{h} (X - x)
+    \right]^{2} \\
+    =
+    & \, \E \left[ K_{h} (X - x)^{2} \right] - f_{h} (x)^{2}.
+  \end{split}
 \end{equation*}
-We wish to show that
+Note that
 \begin{equation*}
-  \text{If }
-  \lim_{n \to \infty} \max \left\{ h_{n}, \frac{1}{n h_{n}^{d}} \right\} = 0,
-  \text{ then } \widehat{Z}_{n} (x) \rightsquigarrow \N (0, 1).
+  V_{h} (x) = \frac{1}{h^{2 d}} \Sigma_{h} (x).
 \end{equation*}
-But we know that if the premise of the above condition holds, that \(Z_{n} (x)
-\rightsquigarrow \N (0, 1)\) and so, by Slutsky's Theorem, we are left to show
+Since \(\widehat{f}_{n, h_{n}}\) is a sample average of the \(K_{h} \left( X_{i}
+- x \right)\)'s and \(X_{i} \overset{\mathrm{iid}}{\sim} X\), it follows that
+\begin{equation*}
+  \Var \left[ \widehat{f}_{n h} (x) \right] = V_{h} (x) / n.
+\end{equation*}
+Furthermore,
+\begin{equation*}
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{V_{h_{n}} (x) / n}} =
+  \frac{S_{n, h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}} \rightsquigarrow \N (0,
+  1),
+\end{equation*}
+by \eqref{eqn--kernel-sum-asymptotic-normality} in
+\Cref{thm--kernel-sum-asymptotic-normality}.
+Therefore, if \(\widehat{V}_{n, h} (x)\) is a consistent estimator of \(V_{h}
+(x)\) in the sense that
+\begin{equation*}
+  \frac{\widehat{V}_{n, h_{n}} (x)}{V_{h_{n}} (x)} \overset{\mathrm{p}}{\to} 1,
+\end{equation*}
+then by Slutsky's Theorem,
+\begin{equation*}
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{\widehat{V}_{h_{n}}
+  (x) / n}} = \sqrt{\frac{V_{h_{n}} (x)}{\widehat{V}_{h_{n}} (x)}} \cdot
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{V_{h_{n}} (x) / n}}
+\rightsquigarrow \N (0, 1),
+\end{equation*}
+
+A reasonable estimator of \(V_{h} (x)\) is the sample variance of the \(K_{h}
+\left( X_{i} - x \right)\)'s:
+\begin{equation}
+  \begin{split}
+    \widehat{V}_{n, h} (x) =
+    & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} -
+    \left( \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)
+    \right)^{2} \\
+    =
+    & \, \frac{1}{n} \sum_{i = 1}^{n} K_{h} \left( X_{i} - x \right)^{2} -
+    \widehat{f}_{n, h} (x)^{2}.
+  \end{split}
+\end{equation}
+
+% BOOKMARK.
+
+\textbf{BOOKMARK}
+
+we are left to show
 that
 \begin{equation*}
   \frac{\widehat{V}_{n, h} (x)}{V_{h} (x)} \overset{\mathrm{p}}{\to} 1,
@@ -300,6 +297,97 @@ We are done if the first term is \(o \left( V_{h} (x)^{2} \right)\)
   & \, o (1).
 \end{align*}
 
+\subsection{Proofs}
+
+\subsubsection{Proof of
+\texorpdfstring{\Cref{thm--kde-asymptotic-normality-usual}}{Theorem
+\ref{thm--kde-asymptotic-normality-usual}}}
+
+\qed
+
+\subsubsection{Proof of
+\texorpdfstring{\Cref{thm--kernel-sum-asymptotic-normality}}{Theorem
+\ref{thm--kernel-sum-asymptotic-normality}}}
+
+We use Liapunov's Central Limit Theorem to prove
+\eqref{eqn--kernel-sum-asymptotic-normality}.
+To that end, define
+\begin{align*}
+  b_{n, h} (x)^{4} =
+  & \, \sum_{i = 1}^{n} \E \left[ \left| K \left( \frac{X_{i} - x}{h} \right) -
+  \E \left[ K \left( \frac{X - x}{h} \right) \right] \right|^{4} \right] \\
+  =
+  & \, n \cdot \E \left[ \left| K \left( \frac{X - x}{h} \right) - \E \left[ K
+  \left( \frac{X - x}{h} \right) \right] \right|^{4} \right].
+\end{align*}
+By Liapunov's Central Limit Theorem,
+\begin{equation}
+  \text{If} \quad \lim_{n \to \infty} \frac{b_{n, h_{n}} (x)^{4}}{\left( n
+  \Sigma_{h_{n}} (x) \right)^{2}} = 0, \quad \text{then} \quad \frac{S_{n,
+  h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}} \rightsquigarrow \N (0, 1).
+  \label{eqn--liapunov-clt}
+\end{equation}
+By the \(C_{r}\) inequality (in particular \((|a| + |b|)^{4} \leq 8 \left(
+|a|^{4} + |b|^{4} \right)\)),
+\begin{equation*}
+  b_{n, h} (x)^{4} \leq 8 n \cdot \left( \E \left[ K \left( \frac{X -
+  x}{h} \right)^{4} \right] + \left| \E \left[ K \left( \frac{X - x}{h}
+  \right) \right] \right|^{4} \right).
+\end{equation*}
+And so,
+\begin{equation}
+  \frac{b_{n, h} (x)^{4}}{\left( n \Sigma_{h} (x) \right)^{2}} \leq \frac{8
+  \left( \E \left[ \left| K \left( \frac{X - x}{h} \right) \right|^{4} \right] +
+  \left| \E \left[ K \left( \frac{X - x}{h} \right) \right] \right|^{4}
+  \right)}{n \left( \E \left[ K \left( \frac{X - x}{h} \right)^{2} \right] - \E
+  \left[ K \left( \frac{X - x}{h} \right) \right]^{2} \right)}.
+  \label{eqn--bnh-var-ratio-bound}
+\end{equation}
+For any \(p \in \{1, 2, 4\}\),
+\begin{equation}
+  \E \left[ K \left( \frac{X - x}{h} \right)^{p} \right] = \int f (\xi) \left| K
+  \left( \frac{\xi - x}{h} \right) \right|^{p} \; \mathrm{d} \xi = h^{d} \int f
+  (x + u h) K (u)^{p} \; \mathrm{d} u.
+  \label{eqn--kernel-local-moment}
+\end{equation}
+Plug \eqref{eqn--bnh-var-ratio-bound} into \eqref{eqn--kernel-local-moment} to
+get
+\begin{equation*}
+  \frac{b_{n, h} (x)^{4}}{\left( n \Sigma_{h} (x) \right)^{2}} \leq \frac{8
+  \left( h^{d} \int f (x + u h) K (u)^{4} \; \mathrm{d} u + \left( h^{d} \int f
+  (x + u h) K (u) \; \mathrm{d} u \right)^{4} \right)}{n \left( h^{d} \int f (x
+  + u h) K (u)^{2} \; \mathrm{d} u - \left( h^{d} \int f (x + u h) K (u) \;
+  \mathrm{d} u \right)^{2} \right)^{2}}.
+\end{equation*}
+Then, since \(\int f (x + u h) K (u) \; \mathrm{d} u = f_{h} (x)\),
+\begin{equation}
+  \frac{b_{n, h} (x)^{4}}{\left( n \Sigma_{h} (x) \right)^{2}} \leq \frac{8
+  \left( \int f (x + u h) K (u)^{4} \; \mathrm{d} u + h^{3 d} f_{h} (x)^{4}
+  \right)}{n h^{d} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d}
+  f_{h} (x)^{2} \right)^{2}}.
+  \label{eqn--bnh-var-ratio-bound-1}
+\end{equation}
+By \Cref{thm--convl-kernel-eg-thin-tail}, since \(\lim_{n \to \infty} h_{n} =
+0\),
+\begin{equation*}
+  \lim_{n \to \infty} \int f \left( x + u h_{n} \right) K (u)^{p} \; \mathrm{d}
+  u = f (x) \int K (u) \; \mathrm{d} u \quad.
+\end{equation*}
+Furthermore, \Cref{asm--kernel} \ref{asm--kernel-unit-integral} implies that
+\(\int K (u)^{p} \; \mathrm{d} u > 0\) for \(p \in \{2, 4\}\).
+Combine this with the above displayed expression and
+\eqref{eqn--bnh-var-ratio-bound-1} to get
+\begin{equation*}
+  \frac{b_{n, h_{n}} (x)^{4}}{\left( n \Sigma_{h_{n}} (x) \right)^{2}} \leq
+  \frac{8}{n h_{n}} \cdot \frac{f (x) \int K (u)^{4} \; \mathrm{d} u + o (1) +
+  h_{n}^{3 d} (f (x) + o (1))^{4}}{\left( f (x) \int K (u)^{2} \; \mathrm{d} u +
+  o (1) - h_{n}^{d} (f (x) + o (1))^{2} \right)^{2}} \to 0,
+\end{equation*}
+since \(\lim_{n \to \infty} \max\left\{ h_{n}, 1 / \left( n h_{n}^{d} \right)
+\right\} = 0\).
+The claim in \eqref{eqn--kernel-sum-asymptotic-normality} now follows by
+\eqref{eqn--liapunov-clt}.
+\qed
 
 %%% Local Variables:
 %%% mode: LaTeX

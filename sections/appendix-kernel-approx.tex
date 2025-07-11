@@ -14,54 +14,62 @@ I should note that \citet{1999paganNonparametricEconometrics} borrow from
 
 \begin{assumption}
 \label{asm--convl-kernel}
-\(\left\{ K_{h} : h \in (0, \infty) \right\}\) is a family of
+\(\left\{ \kappa_{h} : h \in (0, \infty) \right\}\) is a family of
 functions mapping \(\mathbb{R}^{d}\) to \(\mathbb{R}\)
 satisfying the following.
 \begin{enumerate}[label=(\roman*)]
   \item \label{asm--convl-kernel-L1}
-    For each \(h \in (0, \infty)\), \(K_{h}\) is Lebesgue-integrable with
-    \(\int \left| K_{h} (u) \right| \; \mathrm{d} u =: \overline{K}_{h} <
-    \infty\).
-  \item \label{asm--convl-kernel-integral-unit}
-    For each \(h \in (0, \infty)\), \(\int K_{h} (u) \; \mathrm{d} u = 1\).
+    For each \(h \in (0, \infty)\), \(\kappa_{h}\) is integrable with
+    \(\int \left| \kappa_{h} (u) \right| \; \mathrm{d} u =:
+    \overline{\kappa}_{h} < \infty\).
   \item \label{asm--convl-kernel-integral-unif-bound}
-    There is a \(\overline{K} \in (0, \infty)\) such that for every \(h \in (0,
-    \infty)\), \(\overline{K}_{h} \leq \overline{K}\).
-  \item \label{asm--convl-kernel-convl-prob}
+    There is a \(h_{\ast} \in (0, \infty)\) and \(\overline{\kappa} \in (0,
+    \infty)\) such that for every \(h \in \left( 0, h_{\ast} \right]\),
+    \(\overline{\kappa}_{h} \leq \overline{\kappa}\).
+  \item \label{asm--convl-kernel-conv-prob}
     For each \(\delta \in (0, \infty)\), \(\lim_{h \to 0} \int_{\|u\| \geq
-    \delta} \left| K_{h} (u) \right| \mathrm{d} u = 0\).
+    \delta} \left| \kappa_{h} (u) \right| \mathrm{d} u = 0\).
+  \item \label{asm--convl-kernel-integral-lim}
+    For each \(h \in (0, \infty)\), \(\int \kappa_{h} (u) \; \mathrm{d} u =
+    \underline{\kappa}_{h}\) and \(\lim_{h \to 0} \underline{\kappa}_{h} =
+    \underline{\kappa} \in \mathbb{R}\).
 \end{enumerate}
 \end{assumption}
 
 \begin{remark}
 % \label{rem--convl-kernel-non-neg}
-If the family \(\left\{ K_{h} \right\}\) satisfies \(K_{h} \geq 0\) almost
-everywhere for each \(h \in (0, \infty)\), then \Cref{asm--convl-kernel}
-\ref{asm--convl-kernel-L1} and \ref{asm--convl-kernel-integral-unit} imply
-\ref{asm--convl-kernel-integral-unif-bound} with \(\overline{K} = 1\), since in
-this case \(\overline{K}_{h} = 1\) for every \(h \in (0, \infty)\).
+If the family \(\left\{ \kappa_{h} \right\}\) satisfies \(\kappa_{h} \geq 0\)
+almost everywhere for each \(h \in (0, \infty)\), then \Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-L1} and \ref{asm--convl-kernel-integral-lim} imply
+\ref{asm--convl-kernel-integral-unif-bound}, since in this case
+\(\underline{\kappa}_{h} = \overline{\kappa}_{h}\) for every \(h \in (0,
+\infty)\) and we can choose \(h_{\ast}\) to satisfy \(\left|
+\underline{\kappa}_{h} - \underline{\kappa}
+\right| \leq 1\) for every \(h \in \left( 0, h_{\ast} \right]\).
+Then set \(\overline{\kappa} = \left| \underline{\kappa} \right| + 1\).
 \end{remark}
 
 \begin{lemma}
 \label{lem--convl-kernel-eg}
-Let \(K : \mathbb{R}^{d} \to \mathbb{R}\) be a Lebesgue-integrable function with
-\(\int K (u) \; \mathrm{d} u = 1\).
-Define \(K_{h} (u) := h^{- d} K (u / h)\).
-Then \(\left\{ K_{h} \right\}\) satisfies \Cref{asm--convl-kernel}.
+Let \(\kappa : \mathbb{R}^{d} \to \mathbb{R}\) be an integrable function.
+Define \(\kappa_{h} (u) := h^{- d} \kappa (u / h)\).
+Then \(\left\{ \kappa_{h} \right\}\) satisfies \Cref{asm--convl-kernel}.
 \end{lemma}
 
 \begin{proof}[Proof of \Cref{lem--convl-kernel-eg}]
 By the change of variables \(v = u / h\),
 \begin{align*}
-  & \int K_{h} (u) \; \mathrm{d} u = \int h^{- d} K (u / h) \; \mathrm{d} u =
-  \int K (v) \; \mathrm{d} v = 1, \\
-  & \overline{K}_{h} = \int \left| K_{h} (u) \right| \; \mathrm{d} u = \int h^{-
-  d} |K (u / h)| \; \mathrm{d} u = \int |K (v)| \; \mathrm{d} v =: \overline{K},
+  & \underline{\kappa}_{h} = \int \kappa_{h} (u) \; \mathrm{d} u = \int h^{- d}
+  \kappa (u / h) \; \mathrm{d} u = \int \kappa (v) \; \mathrm{d} v \quad \forall
+  h \in (0, \infty), \\
+  & \overline{\kappa}_{h} = \int \left| \kappa_{h} (u) \right| \; \mathrm{d} u =
+  \int h^{- d} |\kappa (u / h)| \; \mathrm{d} u = \int |\kappa (v)| \;
+  \mathrm{d} v =: \overline{\kappa},
   \\
-  & \int_{\|u\| \geq \delta} \left| K_{h} (u) \right| \; \mathrm{d} u =
-  \int_{\|u\| \geq \delta} h^{- d} \left| K (u / h) \right| \; \mathrm{d} u =
-  \int_{\|v\| \geq \delta / h} |K (v)| \; \mathrm{d} v \to 0 \\
-  & \text{since} \quad \{v : \|v\| \geq \delta / h\} \searrow \emptyset \quad
+  & \int_{\|u\| \geq \delta} \left| \kappa_{h} (u) \right| \; \mathrm{d} u =
+  \int_{\|u\| \geq \delta} h^{- d} \left| \kappa (u / h) \right| \; \mathrm{d} u
+  = \int_{\|v\| \geq \delta / h} |\kappa (v)| \; \mathrm{d} v \to 0 \\
+  & \text{since} \quad \{v : \|v\| \geq \delta / h\} \searrow \emptyset, \quad
   \text{as} \quad h \to 0.
 \end{align*}
 \end{proof}
@@ -70,82 +78,96 @@ For a measurable function \(g : \mathbb{R}^{d} \to \mathbb{R}\),
 consider the convolution based approximant
 \begin{equation}
   \begin{gathered}
-  g_{h} (x) := T_{h} [g] (x) := \int g (x + u) K_{h} (u) \; \mathrm{d} u \\
-  \text{for a family } \left\{ K_{h} \right\} \text{ satisfying
+  g_{h} (x) := T_{h} [g] (x) := \int g (x + u) \kappa_{h} (u) \; \mathrm{d} u \\
+  \text{for a family } \left\{ \kappa_{h} \right\} \text{ satisfying
   \Cref{asm--convl-kernel}.}
   \end{gathered}
   \label{eqn--convl-kernel-approximant}
 \end{equation}
 Assume henceforth that for the point \(x\) in question, the integral in
 \eqref{eqn--convl-kernel-approximant} exists and is finite.
+The natural question of primitive assumptions for this existence and finiteness.
 We first provide a pointwise error bound for \(g_{h} - g\).
 
 \begin{theorem}
 \label{thm--convl-kernel-point-error-bound}
-Suppose the family \(\left\{ K_{h} \right\}\) satisfies
-\Cref{asm--convl-kernel}.
-Let \(h, \delta \in (0, \infty)\), \(x \in \mathbb{R}^{d}\) be given, and let
+Let \(\left\{ \kappa_{h} \right\}\) satisfy \Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-L1}-\ref{asm--convl-kernel-conv-prob}.
+Let \(h, \delta \in (0, \infty)\), \(x \in \mathbb{R}^{d}\), and let
 \(g : \mathbb{R}^{d} \to \mathbb{R}\) be a measurable function.
 Assume the integral in \eqref{eqn--convl-kernel-approximant} exists and is
 finite.
 Then
 \begin{equation}
   \begin{split}
-    \left| g_{h} (x) - g (x) \right| \leq
+    \left| g_{h} (x) - g (x) \cdot \underline{\kappa}_{h} \right| \leq
     & \, \left\{ \sup_{\|u\| < \delta} |g (x + u) - g (x)| \right\} \cdot
-    \overline{K} + \int_{\|u\| \geq \delta} |g (x + u)| \cdot \left| K_{h} (u)
-    \right| \; \mathrm{d} u \\
-    & + |g (x)| \int_{\|u\| \geq \delta} \left| K_{h} (u) \right| \; \mathrm{d}
-    u.
+    \overline{\kappa} + \int_{\|u\| \geq \delta} |g (x + u)| \cdot \left|
+    \kappa_{h} (u) \right| \; \mathrm{d} u \\
+    & + |g (x)| \int_{\|u\| \geq \delta} \left| \kappa_{h} (u) \right| \;
+    \mathrm{d} u.
   \end{split}
   \label{eqn--convl-kernel-inequality-main}
 \end{equation}
 \end{theorem}
 
 \begin{proof}[Proof of \Cref{thm--convl-kernel-point-error-bound}]
-By \(\int K_{h} (u) \; \mathrm{d} u = 1\),
 \begin{equation*}
-  \left| g_{h} (x) - g (x) \right| = \left| \int (g (x + u) - g (x)) K_{h} (u)
-  \; \mathrm{d} u \right| \leq \int |g (x + u) - g (x)| \left| K_{h} (u) \right|
-  \; \mathrm{d} u.
+  \left| g_{h} (x) - g (x) \cdot \underline{\kappa}_{h} \right| = \left| \int (g
+  (x + u) - g (x)) \kappa_{h} (u) \; \mathrm{d} u \right| \leq \int |g (x + u) -
+  g (x)| \left| \kappa_{h} (u) \right| \; \mathrm{d} u.
 \end{equation*}
 Split the integral on the right:
 \begin{align*}
-  \left| g_{h} (x) - g (x) \right| \leq
-  & \, \int_{\|u\| < \delta} |g (x + u) - g (x)| \left| K_{h} (u) \right| \;
-  \mathrm{d} u % \\ &
-  + \int_{\|u\| \geq \delta} |g (x + u) - g (x)| \left| K_{h} (u) \right| \;
-  \mathrm{d} u \\
-  \leq
-  & \, \sup_{\|u\| < \delta} |g (x + u) - g (x)| \int \left| K_{h} (u) \right|
+  \left| g_{h} (x) - g (x) \cdot \underline{\kappa}_{h} \right| \leq
+  & \, \int_{\|u\| < \delta} |g (x + u) - g (x)| \left| \kappa_{h} (u) \right|
   \; \mathrm{d} u \\
-  & + \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \;
-  \mathrm{d} u + |g (x)| \int_{\|u\| \geq \delta} \left| K_{h} (u) \right| \;
-  \mathrm{d} u.
+  & + \int_{\|u\| \geq \delta} |g (x + u) - g (x)| \left| \kappa_{h} (u) \right|
+  \; \mathrm{d} u \\
+  \leq
+  & \, \left[ \sup_{\|u\| < \delta} |g (x + u) - g (x)| \right] \int \left|
+  \kappa_{h} (u) \right| \; \mathrm{d} u \\
+  & + \int_{\|u\| \geq \delta} |g (x + u)| \left| \kappa_{h} (u) \right| \;
+  \mathrm{d} u + |g (x)| \int_{\|u\| \geq \delta} \left| \kappa_{h} (u) \right|
+  \; \mathrm{d} u.
 \end{align*}
 In the last inequality above, bound the integral in the first term by
-\(\overline{K}\) to get \eqref{eqn--convl-kernel-inequality-main}.
+\(\overline{\kappa}\) to get \eqref{eqn--convl-kernel-inequality-main}.
 \end{proof}
 
 \begin{lemma}
 \label{lem--convl-kernel-conv-criteria}
-Suppose the family \(\left\{ K_{h} \right\}\) satisfies
-\Cref{asm--convl-kernel}.
-Let \(x \in \mathbb{R}^{d}\) be given, and let \(g : \mathbb{R}^{d} \to
-\mathbb{R}\) be a measurable function that is continuous at \(x\).
+Let \(\left\{ \kappa_{h} \right\}\) satisfy
+\Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-L1}-\ref{asm--convl-kernel-conv-prob}.
+Let \(x \in \mathbb{R}^{d}\), and let \(g : \mathbb{R}^{d} \to \mathbb{R}\) be a
+measurable function that is continuous at \(x\).
 Assume the integral in \eqref{eqn--convl-kernel-approximant} exists and is
 finite for \(h > 0\) sufficiently small.
 \begin{equation}
-  \text{If} \quad
-  \forall \delta > 0, \lim_{h \to 0} \int_{\|u\| \geq \delta} |g
-  (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u = 0,
-  \quad \text{then} \quad
-  \lim_{h \to \infty} g_{h} (x) = g (x).
+  \begin{gathered}
+  \text{If} \quad \forall \delta > 0, \quad \lim_{h \to 0} \int_{\|u\| \geq
+  \delta} |g (x + u)| \left| \kappa_{h} (u) \right| \; \mathrm{d} u = 0, \quad
+  \text{then} \\
+  \lim_{h \to \infty} \left( g_{h} (x) - g (x) \cdot \underline{\kappa}_{h}
+  \right) = 0.
+\end{gathered}
   \label{eqn--convl-kernel-conv-criteria}
+\end{equation}
+Furthermore if \(\left\{ \kappa_{h} \right\}\) also satisfies satisfies
+\Cref{asm--convl-kernel} \ref{asm--convl-kernel-integral-lim} then the premise
+in \eqref{eqn--convl-kernel-conv-criteria} also implies
+\begin{equation}
+  \lim_{h \to \infty} g_{h} (x) = g (x) \underline{\kappa}.
+  \label{eqn--convl-kernel-conv-main}
 \end{equation}
 \end{lemma}
 
 \begin{proof}[Proof of \Cref{lem--convl-kernel-conv-criteria}]
+Under \Cref{asm--convl-kernel} \ref{asm--convl-kernel-integral-lim},
+\eqref{eqn--convl-kernel-conv-main} is an immediate consequence of
+\eqref{eqn--convl-kernel-conv-criteria}.
+So we prove \eqref{eqn--convl-kernel-conv-criteria}.
 Since \(g\) is continuous at \(x\), the first term in
 \eqref{eqn--convl-kernel-inequality-main} can be controlled by choice of
 \(\delta\) sufficiently small.
@@ -155,23 +177,26 @@ sufficiently small by
 \eqref{eqn--convl-kernel-conv-criteria}.
 For any choice of \(\delta\), the third term in
 \eqref{eqn--convl-kernel-inequality-main} is controlled by choice of \(h\)
-sufficiently small due to \Cref{asm--convl-kernel}
-\ref{asm--convl-kernel-convl-prob}.
+sufficiently small by \Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-conv-prob}.
 \end{proof}
 
 We therefore need some way(s) to show \eqref{eqn--convl-kernel-conv-criteria} to
 deal with the second term in \eqref{eqn--convl-kernel-inequality-main}.
 We present two ways to do this.
 
-
 \begin{theorem}
 \label{thm--convl-kernel-conv-bounded}
-Suppose the family \(\left\{ K_{h} \right\}\) satisfies
-\Cref{asm--convl-kernel}.
-Let \(x \in \mathbb{R}^{d}\) be given, and \(g : \mathbb{R}^{d} \to \mathbb{R}\)
+Let \(\left\{ \kappa_{h} \right\}\) satisfy \Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-L1}-\ref{asm--convl-kernel-conv-prob}.
+Let \(x \in \mathbb{R}^{d}\), and \(g : \mathbb{R}^{d} \to \mathbb{R}\)
 be a bounded and measurable function that is continuous at \(x\).
 Then the integral in \eqref{eqn--convl-kernel-approximant} exists and is finite
-and furthermore, \(\lim_{h \to 0} g_{h} (x) = g (x)\).
+and furthermore, \(\lim_{h \to 0} \left( g_{h} (x) - g (x)
+\underline{\kappa}_{h} \right) = 0\).
+If in addition, \(\left\{ \kappa_{h} \right\}\) satisfies
+\Cref{asm--convl-kernel} \ref{asm--convl-kernel-integral-lim}, then
+\(\lim_{h \to 0} g_{h} (x) = g (x) \underline{\kappa}\)
 \end{theorem}
 
 \begin{proof}[Proof of \Cref{thm--convl-kernel-conv-bounded}]
@@ -180,40 +205,43 @@ Existence and finiteness of the integral in
 hypothesis of \(g\) being bounded.
 Furthermore by this hypothesis, given any \(\delta > 0\)
 \begin{equation*}
-  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
-  \leq \sup_{y \in \mathbb{R}^{d}} |g (y)| \int_{\|u\| \geq \delta}
-  \left| K_{h} (u) \right| \; \mathrm{d} u \to 0 \quad \text{as} \quad h \to 0.
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| \kappa_{h} (u) \right| \;
+  \mathrm{d} u \leq \sup_{y \in \mathbb{R}^{d}} |g (y)| \int_{\|u\| \geq \delta}
+  \left| \kappa_{h} (u) \right| \; \mathrm{d} u \to 0 \quad \text{as} \quad h
+  \to 0.
 \end{equation*}
-By \eqref{eqn--convl-kernel-conv-criteria} in
-\Cref{lem--convl-kernel-conv-criteria}, \(\lim_{h \to 0} g_{h} (x) = g (x)\) as
-desired.
+Both limiting claims in \Cref{thm--convl-kernel-conv-bounded} now follow from
+\eqref{eqn--convl-kernel-conv-criteria} in
+\Cref{lem--convl-kernel-conv-criteria}.
 \end{proof}
 
 \begin{assumption}
 \label{asm--convl-kernel-conv-thin-tail}
-The family \(\left\{ K_{h} \right\}\) in
+The family \(\left\{ \kappa_{h} \right\}\) in
 \Cref{asm--convl-kernel} also satisfies the following condition:
 \begin{equation}
   \forall \delta > 0, \quad
-  \lim_{h \to 0} \sup_{\|u\| \geq \delta} \|u\|^{d} K_{h} (u) = 0.
+  \lim_{h \to 0} \sup_{u \in \mathbb{R}^{d} : \|u\| \geq \delta} \|u\|^{d}
+  \kappa_{h} (u) = 0.
   \label{eqn--conv-kernel-thin-tail-condition}
 \end{equation}
 \end{assumption}
 
 \begin{lemma}
 \label{lem--convl-kernel-eg-thin-tail}
-Consider the function \(K\) and the associated family \(\left\{ K_{h} \right\}\)
-in \Cref{lem--convl-kernel-eg}.
+Consider the function \(\kappa\) and the associated family \(\left\{ \kappa_{h}
+\right\}\) in \Cref{lem--convl-kernel-eg}.
 \begin{equation}
-  \text{If } \lim_{\|y\| \to \infty} \|y\|^{d} K (y) = 0, \text{ then } \left\{
-  K_{h} \right\} \text{ satisfies \Cref{asm--convl-kernel-conv-thin-tail}.}
+  \text{If } \lim_{\|y\| \to \infty} \|y\|^{d} \kappa (y) = 0, \text{ then }
+  \left\{ \kappa_{h} \right\} \text{ satisfies
+  \Cref{asm--convl-kernel-conv-thin-tail}.}
   \label{eqn--conv-kernel-thin-tail-condition-1}
 \end{equation}
 \end{lemma}
 
 \begin{proof}[Proof of \Cref{lem--convl-kernel-eg-thin-tail}]
-Note that \(\sup_{\|u\| \geq \delta} \|u\|^{d} K_{h} (u) = \sup_{\|u\| \geq
-\delta} \| u / h \|^{d} K (u / h)\).
+Note that \(\sup_{\|u\| \geq \delta} \|u\|^{d} \kappa_{h} (u) = \sup_{\|u\| \geq
+\delta} \| u / h \|^{d} \kappa (u / h)\).
 Given any \(\delta > 0\), the premise in
 \eqref{eqn--conv-kernel-thin-tail-condition-1} ensures that the right hand side
 can be made arbitrarily small when \(h \to 0\).
@@ -222,22 +250,30 @@ Thus \eqref{eqn--conv-kernel-thin-tail-condition} is satisfied.
 
 \begin{theorem}
 \label{thm--convl-kernel-conv-thin-tail}
-Suppose the family \(\left\{ K_{h} \right\}\) satisfies
-\Cref{asm--convl-kernel} and \Cref{asm--convl-kernel-conv-thin-tail}.
-Let \(x \in \mathbb{R}^{d}\) be given, and let \(g : \mathbb{R}^{d} \to
-\mathbb{R}\) be a Lebesgue-integrable function that is continuous at \(x\).
+Suppose the family \(\left\{ \kappa_{h} \right\}\) satisfies
+\Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-L1}-\ref{asm--convl-kernel-conv-prob} and
+\Cref{asm--convl-kernel-conv-thin-tail}.
+Let \(x \in \mathbb{R}^{d}\), and let \(g : \mathbb{R}^{d} \to \mathbb{R}\) be
+an integrable function that is continuous at \(x\).
 Then for \(h > 0\) sufficiently small, the integral in
 \eqref{eqn--convl-kernel-approximant} exists and is finite.
-Furthermore, \(\lim_{h \to 0} g_{h} (x) = g (x)\).
+In addition, \(\lim_{h \to 0} \left( g_{h} (x) - g (x) \underline{\kappa}_{h}
+\right) = 0\).
+Furthermore, if \(\left\{ \kappa_{h} \right\}\) satisfies
+\Cref{asm--convl-kernel}
+\ref{asm--convl-kernel-integral-lim} then \(\lim_{h \to 0} g_{h} (x) = g (x)
+\underline{\kappa}\).
 \end{theorem}
 
 \begin{proof}[Proof of \Cref{thm--convl-kernel-conv-thin-tail}]
 For existence and finiteness of the integral in
 \eqref{eqn--convl-kernel-approximant}, first note that for any \(\delta > 0\),
 \begin{equation*}
-  |g (x + u)| \left| K_{h} (u) \right| \leq |g (x + u)| \left| K_{h} (u) \right|
-  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left| K_{h}
-  (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
+  |g (x + u)| \left| \kappa_{h} (u) \right| \leq |g (x + u)| \left| \kappa_{h}
+  (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left|
+  \kappa_{h} (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
 \end{equation*}
 Take any \(\varepsilon \in (0, \infty)\) and choose \(\delta :=
 \delta_{\varepsilon, x} \in (0, \infty)\) to ensure that \(|g (x + u) - g (x)| <
@@ -245,30 +281,30 @@ Take any \(\varepsilon \in (0, \infty)\) and choose \(\delta :=
 Then, \(|g (x + u)| < |g (x)| + \varepsilon\) and combining this with the bound
 in the above display,
 \begin{align*}
-  |g (x + u)| \left| K_{h} (u) \right| \leq
-  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right|
-  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left| K_{h}
-  (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  |g (x + u)| \left| \kappa_{h} (u) \right| \leq
+  & \ (|g (x)| + \varepsilon) \left| \kappa_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| < \delta \right\} + |g (x + u)| \left|
+  \kappa_{h} (u) \right| \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
-  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
-  \|u\| < \delta \right\} \\
-  & + \frac{|g (x + u)|}{\|u\|^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
-  \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  & \ (|g (x)| + \varepsilon) \left| \kappa_{h} (u) \right| \cdot \mathbf{1}
+  \left\{ \|u\| < \delta \right\} \\
+  & + \frac{|g (x + u)|}{\|u\|^{d}} \|u\|^{d} \left| \kappa_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
-  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
-  \|u\| < \delta \right\} \\
-  & + \frac{|g (x + u)|}{\delta^{d}} \|u\|^{d} \left| K_{h} (u) \right| \cdot
-  \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
+  & \ (|g (x)| + \varepsilon) \left| \kappa_{h} (u) \right| \cdot \mathbf{1}
+  \left\{ \|u\| < \delta \right\} \\
+  & + \frac{|g (x + u)|}{\delta^{d}} \|u\|^{d} \left| \kappa_{h} (u) \right|
+  \cdot \mathbf{1} \left\{ \|u\| \geq \delta \right\} \\
   \leq
-  & \ (|g (x)| + \varepsilon) \left| K_{h} (u) \right| \cdot \mathbf{1} \left\{
-  \|u\| < \delta \right\} \\
+  & \ (|g (x)| + \varepsilon) \left| \kappa_{h} (u) \right| \cdot \mathbf{1}
+  \left\{ \|u\| < \delta \right\} \\
   & + \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
-  \delta} \|y\|^{d} \left| K_{h} (y) \right| \right] \cdot |g (x + u)|
+  \delta} \|y\|^{d} \left| \kappa_{h} (y) \right| \right] \cdot |g (x + u)|
   \mathbf{1} \left\{ \|u\| \geq \delta \right\}.
 \end{align*}
 The supremum in the above display exists and is finite for \(h\) sufficiently
 small by \eqref{eqn--conv-kernel-thin-tail-condition}.
-We know that \(\left| K_{h} (u) \right|\) has a finite integral by
+We know that \(\left| \kappa_{h} (u) \right|\) has a finite integral by
 \Cref{asm--convl-kernel} \ref{asm--convl-kernel-L1}.
 Therefore, the a sufficient condition for the existence and finiteness of the
 integral in \eqref{eqn--convl-kernel-approximant} is integrability of \(|g (x +
@@ -277,22 +313,22 @@ integrable.
 To that end, note that \(\int |g (x + u)| \; \mathrm{d} u = \int |g (v)| \;
 \mathrm{d} v < \infty\) by the change of variables \(v = x + u\).
 
-To prove the limit claim, we show \eqref{eqn--convl-kernel-conv-criteria} in
+To prove the limit claims, we show \eqref{eqn--convl-kernel-conv-criteria} in
 \Cref{lem--convl-kernel-conv-criteria}.
 Given any \(\delta > 0\),
 \begin{align*}
-  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
-  =
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| \kappa_{h} (u) \right| \;
+  \mathrm{d} u =
   & \, \int_{\|u\| \geq \delta} \frac{|g (x + u)|}{\|u\|^{d}} \cdot \|u\|^{d}
-  \cdot \left| K_{h} (u) \right| \; \mathrm{d} u \\
+  \cdot \left| \kappa_{h} (u) \right| \; \mathrm{d} u \\
   =
   & \, \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq \delta} \|y\|^{d} \cdot
-  \left| K_{h} (y) \right| \right] \cdot \int_{\|u\| \geq \delta} \frac{|g (x +
-  u)|}{\|u\|^{d}} \; \mathrm{d} u \\
+  \left| \kappa_{h} (y) \right| \right] \cdot \int_{\|u\| \geq \delta} \frac{|g
+  (x + u)|}{\|u\|^{d}} \; \mathrm{d} u \\
   \leq
   & \, \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
-  \delta} \|y\|^{d} \cdot \left| K_{h} (y) \right| \right] \cdot \int_{\|u\|
-  \geq \delta} |g (x + u)| \; \mathrm{d} u.
+  \delta} \|y\|^{d} \cdot \left| \kappa_{h} (y) \right| \right] \cdot
+  \int_{\|u\| \geq \delta} |g (x + u)| \; \mathrm{d} u.
 \end{align*}
 In addition,
 \begin{equation*}
@@ -301,16 +337,48 @@ In addition,
 \end{equation*}
 Combining both bounds,
 \begin{equation*}
-  \int_{\|u\| \geq \delta} |g (x + u)| \left| K_{h} (u) \right| \; \mathrm{d} u
-  \leq \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} : \|y\| \geq
-  \delta} \|y\|^{d} \cdot \left| K_{h} (y) \right| \right] \cdot \int |g (v)| \;
-  \mathrm{d} v.
+  \int_{\|u\| \geq \delta} |g (x + u)| \left| \kappa_{h} (u) \right| \;
+  \mathrm{d} u \leq \frac{1}{\delta^{d}} \left[ \sup_{y \in \mathbb{R}^{d} :
+  \|y\| \geq \delta} \|y\|^{d} \cdot \left| \kappa_{h} (y) \right| \right] \cdot
+  \int |g (v)| \; \mathrm{d} v.
 \end{equation*}
 Given any \(\delta > 0\), the right hand side of the above display tends to 0 as
 \(h \to 0\) by \eqref{eqn--conv-kernel-thin-tail-condition}.
-By \eqref{eqn--convl-kernel-conv-criteria} in
-\Cref{lem--convl-kernel-conv-criteria}, \(\lim_{h \to 0} g_{h} (x) = g (x)\) as
-desired.
+Both limiting claims in \Cref{thm--convl-kernel-conv-thin-tail} now follow from
+\eqref{eqn--convl-kernel-conv-criteria} in
+\Cref{lem--convl-kernel-conv-criteria}.
+\end{proof}
+
+\begin{theorem}
+\label{thm--convl-kernel-eg-thin-tail}
+Let \(\kappa : \mathbb{R}^{d} \to \mathbb{R}\) be an integrable function with
+\(\lim_{\|y\| \to \infty} \|y\|^{d} \kappa (y) = 0\).
+Let \(x \in \mathbb{R}^{d}\), and let \(g : \mathbb{R}^{d} \to \mathbb{R}\) be
+an integrable function that is continuous at \(x\).
+Then
+\begin{equation}
+  \lim_{h \to 0} \int g (x + v h) \kappa (v) \; \mathrm{d} v = \lim_{h \to
+  0} \frac{1}{h^{d}} \int g (x + u) \kappa (u / h) \; \mathrm{d} u =
+  g (x) \int \kappa (u) \; \mathrm{d} u.
+  \label{eqn--convl-kernel-eg-thin-tail}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof of \Cref{thm--convl-kernel-eg-thin-tail}]
+Let \(\kappa_{h} (u) := h^{- d} \kappa (u / h)\).
+The first equality in \eqref{eqn--convl-kernel-eg-thin-tail} follows from
+the change of variables \(v = u / h\).
+So we prove the second equality.
+By \Cref{lem--convl-kernel-eg} and \Cref{lem--convl-kernel-eg-thin-tail},
+\(\left\{ \kappa_{h} \right\}\) satisfies \Cref{asm--convl-kernel} and
+\Cref{asm--convl-kernel-conv-thin-tail}.
+By the change of variables \(v = u / h\), \(\underline{\kappa}_{h} = h^{- d}
+\int \kappa (u / h) \; \mathrm{d} u = \int \kappa (v) \; \mathrm{d} v\) for
+every \(h \in (0, \infty)\).
+Hence, \(\lim_{h \to 0} \underline{\kappa}_{h} = \underline{\kappa} := \int
+\kappa (v) \; \mathrm{d} v\) is trivially true.
+Then \eqref{eqn--convl-kernel-eg-thin-tail} follows from
+\Cref{thm--convl-kernel-conv-thin-tail}.
 \end{proof}
 
 %%% Local Variables:
