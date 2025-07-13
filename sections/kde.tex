@@ -61,7 +61,7 @@ The following is a usual statement of consistency and asymptotic normality for
 \(\widehat{f}_{n, h_{n}} (x)\).
 
 \begin{theorem}
-\label{thm--kde-asymptotic-normality-usual}
+\label{thm--kde-asymp-norm-usual}
 Let the probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x
 \in \mathbb{R}^{d}\) and satisfy \(f (x) > 0\), let \(K\) be a function
 satisfying \Cref{asm--kernel}, and let the sequence \(\left\{ h_{n} \right\}\)
@@ -72,9 +72,14 @@ Then as \(n \to \infty\),
   \quad
   \sqrt{n h_{n}^{d}} \left( \widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) \right)
   \rightsquigarrow \N \left( 0, f (x) \int K (u)^{2} \; \mathrm{d} u \right).
-  \label{eqn--kde-asymptotic-normality-usual}
+  \label{eqn--kde-asymp-norm-usual}
 \end{equation}
 \end{theorem}
+
+\begin{proof}[Proof of \Cref{thm--kde-asymp-norm-usual}]
+See \Cref{sec--prf--thm--kde-asymp-norm-usual}.
+\end{proof}
+
 
 In this note, we will avoid talking about asymptotic normality of
 \(\widehat{f}_{n, h_{n}} - f (x)\) since the bias term \(f_{h_{n}} (x) - f (x)\)
@@ -82,10 +87,9 @@ is typically non-zero and requires slightly delicate handling after scaling by
 \(\sqrt{n h_{n}^{d}}\).
 Instead, we focus on the centered quantity \(\widehat{f}_{n, h_{n}} - f_{h_{n}}
 (x)\) to focus only on asymptotic normality and standard error estimation.
-To that end, the typical prescription for inference then based on an application
-of Slutsky's Theorem and direct use of
-\eqref{eqn--kde-asymptotic-normality-usual}: under the
-conditions of \Cref{thm--kde-asymptotic-normality-usual},
+To that end, the typical prescription for inference is based on an application
+of Slutsky's Theorem and direct use of \eqref{eqn--kde-asymp-norm-usual}: under
+the conditions of \Cref{thm--kde-asymp-norm-usual},
 \begin{equation}
   \begin{gathered}
     \widetilde{t}_{n} = \frac{\sqrt{n h_{n}^{d}}\left( \widehat{f}_{n, h_{n}}
@@ -94,7 +98,7 @@ conditions of \Cref{thm--kde-asymptotic-normality-usual},
     \text{where} \quad \widetilde{V}_{n, h_{n}} (x) = \widehat{f}_{n, h_{n}} (x)
     \int K (u)^{2} \; \mathrm{d} u.
   \end{gathered}
-  \label{eqn--kde-asymptotic-normality-tstat-usual}
+  \label{eqn--kde-asymp-norm-tstat-usual}
 \end{equation}
 
 In this note, we follow an alternative route.
@@ -107,13 +111,15 @@ A key object in our derivations will be the centered kernel sum
   \label{eqn--kernel-sum}
 \end{equation}
 Note that
-\begin{equation*}
+\begin{equation}
   \widehat{f}_{n, h} (x) - f_{h} (x) = \frac{S_{n, h} (x)}{n h^{d}}.
-\end{equation*}
+  \label{eqn--fhat-diff-to-kernel-sum}
+\end{equation}
 Clearly since \(X_{i} \overset{\mathrm{iid}}{\sim} X\) (\Cref{asm--kde-dgp}),
 \begin{equation}
   \E \left[ S_{n, h} (x) \right] = 0 \quad \text{and} \quad \mathrm{Var}
   \left[ S_{n, h} (x) \right] = n \Sigma_{h} (x),
+  \label{eqn--kernel-sum-mean-and-var}
 \end{equation}
 where by \eqref{eqn--convl-kernel-eg-thin-tail} in
 \Cref{thm--convl-kernel-eg-thin-tail},
@@ -127,6 +133,7 @@ where by \eqref{eqn--convl-kernel-eg-thin-tail} in
     & \, h^{d} \int f (x + u h) K (u)^{2} \; \mathrm{d} u
     - \left( h^{d} \int f (x + u h) K (u) \; \mathrm{d} u \right)^{2}.
   \end{split}
+  \label{eqn--Sigmah-expand}
 \end{equation}
 The following result shows that \(S_{n, h_{n}} (x) / \sqrt{n \Sigma_{h_{n}}
 (x)}\) is asymptotically standard normal.
@@ -136,7 +143,7 @@ or \citet[Theorem 18 in Section 4 of Chapter III,
 p. 51]{1984pollardConvergenceStochasticProcesses}).
 
 \begin{theorem}
-\label{thm--kernel-sum-asymptotic-normality}
+\label{thm--kernel-sum-asymp-norm}
 Let the probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x
 \in \mathbb{R}^{d}\) and satisfy \(f (x) > 0\), let \(K\) be a function
 satisfying \Cref{asm--kernel}, and let the sequence \(\left\{ h_{n} \right\}\)
@@ -145,9 +152,13 @@ Then as \(n \to \infty\),
 \begin{equation}
   \frac{S_{n, h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}} \rightsquigarrow \N (0,
   1).
-  \label{eqn--kernel-sum-asymptotic-normality}
+  \label{eqn--kernel-sum-asymp-norm}
 \end{equation}
 \end{theorem}
+
+\begin{proof}[Proof of \Cref{thm--kernel-sum-asymp-norm}]
+See \Cref{sec--prf--thm--kernel-sum-asymp-norm}.
+\end{proof}
 
 Define
 \begin{equation*}
@@ -169,28 +180,20 @@ Since \(\widehat{f}_{n, h_{n}}\) is a sample average of the \(K_{h} \left( X_{i}
   \Var \left[ \widehat{f}_{n h} (x) \right] = V_{h} (x) / n.
 \end{equation*}
 Furthermore,
-\begin{equation*}
+\begin{equation}
   \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{V_{h_{n}} (x) / n}} =
   \frac{S_{n, h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}} \rightsquigarrow \N (0,
   1),
-\end{equation*}
-by \eqref{eqn--kernel-sum-asymptotic-normality} in
-\Cref{thm--kernel-sum-asymptotic-normality}.
-Therefore, if \(\widehat{V}_{n, h} (x)\) is a consistent estimator of \(V_{h}
-(x)\) in the sense that
-\begin{equation*}
-  \frac{\widehat{V}_{n, h_{n}} (x)}{V_{h_{n}} (x)} \overset{\mathrm{p}}{\to} 1,
-\end{equation*}
-then by Slutsky's Theorem,
-\begin{equation*}
-  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{\widehat{V}_{h_{n}}
-  (x) / n}} = \sqrt{\frac{V_{h_{n}} (x)}{\widehat{V}_{h_{n}} (x)}} \cdot
-  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{V_{h_{n}} (x) / n}}
-\rightsquigarrow \N (0, 1),
-\end{equation*}
+  \label{eqn--kernel-sum-asymp-norm-1}
+\end{equation}
+by \eqref{eqn--kernel-sum-asymp-norm} in
+\Cref{thm--kernel-sum-asymp-norm}.
 
-A reasonable estimator of \(V_{h} (x)\) is the sample variance of the \(K_{h}
-\left( X_{i} - x \right)\)'s:
+For a feasible implementation of \eqref{eqn--kernel-sum-asymp-norm-1},
+we require a consistent estimator (in a sense to be defined later on) of \(V_{h}
+(x)\).
+To that end, a reasonable estimator of \(V_{h} (x)\) is the sample variance of
+the \(K_{h} \left( X_{i} - x \right)\)'s:
 \begin{equation}
   \begin{split}
     \widehat{V}_{n, h} (x) =
@@ -202,115 +205,109 @@ A reasonable estimator of \(V_{h} (x)\) is the sample variance of the \(K_{h}
     \widehat{f}_{n, h} (x)^{2}.
   \end{split}
 \end{equation}
+\Cref{thm--kde-asymp-norm-conv-var} shows that using \(\widehat{V}_{n, h}
+(x)\) in standardization achieves asymptotic standard normality for the
+resulting \(t\)-statistic.
 
-% BOOKMARK.
+\begin{theorem}
+\label{thm--kde-asymp-norm-conv-var}
+Let the probability density \(f\) in \Cref{asm--kde-dgp} be continuous at \(x
+\in \mathbb{R}^{d}\) and satisfy \(f (x) > 0\), let \(K\) be a function
+satisfying \Cref{asm--kernel}, and let the sequence \(\left\{ h_{n} \right\}\)
+satisfy \Cref{asm--bandwidth}.
+Then as \(n \to \infty\),
+\begin{equation}
+  \frac{\widehat{V}_{n, h_{n}} (x)}{V_{h_{n}} (x)} \overset{\mathrm{p}}{\to} 1
+  \quad \text{and so} \quad \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}}
+  (x)}{\sqrt{\widehat{V}_{n, h_{n}} (x) / n}} \rightsquigarrow \N (0, 1).
+  \label{eqn--kde-asymp-norm-conv-var}
+\end{equation}
+\end{theorem}
 
-\textbf{BOOKMARK}
-
-we are left to show
-that
-\begin{equation*}
-  \frac{\widehat{V}_{n, h} (x)}{V_{h} (x)} \overset{\mathrm{p}}{\to} 1,
-\end{equation*}
-or equivalently that
-\begin{equation*}
-  \widehat{V}_{n, h} (x) - V_{h} (x) = o_{\mathrm{p}} \left( V_{h} (x) \right).
-\end{equation*}
-To that end,
-\begin{equation*}
-  \widehat{V}_{n, h} (x) - V_{h} (x) = \frac{1}{n} \sum_{i = 1}^{n} \left\{
-  K_{h} \left( X_{i} - x \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right]
-  \right\} + f_{h} (x)^{2} - \widehat{f}_{n, h} (x)^{2}
-\end{equation*}
-Hence, we can show the following two conditions separately:
-\begin{align}
-  \frac{1}{n} \sum_{i = 1}^{n} \left\{
-  K_{h} \left( X_{i} - x \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right]
-  \right\} =
-  & \,  o_{\mathrm{p}} \left( V_{h} (x) \right) \\
-  \widehat{f}_{n, h} (x)^{2} - f_{h} (x)^{2} =
-  & \, o_{\mathrm{p}} \left( V_{h} (x)
-  \right)
-\end{align}
-Start with the latter and write
-\begin{equation*}
-  \widehat{f}_{n, h} (x)^{2} - f_{h} (x)^{2} = \left( \widehat{f}_{n, h} (x) +
-  f_{h} (x) \right) \left( \widehat{f}_{n, h} (x) - f_{h} (x) \right).
-\end{equation*}
-Recall that \(\widehat{f}_{n, h} (x) - f_{h} (x) = O_{p} \left( \sqrt{V_{h} (x)
-/ n} \right)\).
-A sufficient condition is then \(1 / n = o \left( V_{h} (x) \right)\).
-To show this, recall that
-\begin{equation*}
-  V_{h} (x) = \frac{1}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u
-  - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right).
-\end{equation*}
-So, as long as \(f (x) > 0\),
-\begin{equation*}
-  \frac{1}{n V_{h} (x)} = \frac{h^{d}}{n \left( \int f (x + u h) K
-  (u)^{2} \; \mathrm{d} u - h^{d} \left[ \int f (x + u h) K (u) \; \mathrm{d} u
-  \right]^{2} \right)} \to 0.
-\end{equation*}
-
-Now set
-\begin{equation*}
-  D_{n, h} (x) = \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i} - x
-  \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right] \right\}.
-\end{equation*}
-We know that \(D_{n, h} (x) = O_{\mathrm{p}} \left( \Var \left[ D_{n, h} (x)
-\right]^{1 / 2} \right)\) and so we wish to show that
-\begin{equation*}
-  \Var \left[ D_{n, h} (x) \right]^{1 / 2} = o \left( V_{h} (x) \right) \text{
-  or equivalently } \Var \left[ D_{n, h} (x) \right] = o \left( V_{h}
-  (x)^{2} \right).
-\end{equation*}
-But
-\begin{align*}
-  \Var \left[ D_{n, h} (x) \right] =
-  & \, \frac{\E \left[ K_{h} (X - x)^{4} \right] - \E \left[ K_{h} (X - x)^{2}
-  \right]^{2}}{n} = \frac{\E \left[ K_{h} (X - x)^{4} \right]}{n} - \frac{O
-  \left( V_{h} (x)^{2} \right)}{n} \\
-  =
-  & \, \frac{\E \left[ K_{h} (X - x)^{4} \right]}{n} - o \left( V_{h} (x)^{2}
-  \right) \\
-  =
-  & \, \frac{\frac{1}{h^{3 d}} \int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n} -
-  o \left( V_{h} (x)^{2} \right)
-\end{align*}
-We are done if the first term is \(o \left( V_{h} (x)^{2} \right)\)
-\begin{align*}
-  \frac{\frac{\frac{1}{h^{3 d}} \int f (x + u h) K (u)^{4} \; \mathrm{d}
-  u}{n}}{V_{h} (x)^{2}} =
-  & \, \frac{\int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n h^{3 d} V_{h}
-  (x)^{2}} \\
-  =
-  & \, \frac{\int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n h^{3 d} \left(
-  \frac{1}{h^{d}} \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d}
-  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \right)^{2}}
-  \\
-  =
-  & \, \frac{h^{d} \int f (x + u h) K (u)^{4} \; \mathrm{d} u}{n \left(
-  \left( \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d}
-  \left[ \int f (x + u h) K (u) \; \mathrm{d} u \right]^{2} \right) \right)^{2}}
-  \\
-  =
-  & \, o (1).
-\end{align*}
+\begin{proof}[Proof of \Cref{thm--kde-asymp-norm-conv-var}]
+See \Cref{sec--prf--thm--kde-asymp-norm-conv-var}.
+\end{proof}
 
 \subsection{Proofs}
 
 \subsubsection{Proof of
-\texorpdfstring{\Cref{thm--kde-asymptotic-normality-usual}}{Theorem
-\ref{thm--kde-asymptotic-normality-usual}}}
+\texorpdfstring{\Cref{thm--kde-asymp-norm-usual}}{Theorem
+\ref{thm--kde-asymp-norm-usual}}}
+\label{sec--prf--thm--kde-asymp-norm-usual}
 
+The consistency part of \eqref{eqn--kde-asymp-norm-usual} follows from the
+asymptotic normality part of \eqref{eqn--kde-asymp-norm-usual} combined with
+\Cref{thm--convl-kernel-eg-thin-tail}.
+To see this, note that
+\begin{equation*}
+  \widehat{f}_{n, h_{n}} (x) - f (x) = \widehat{f}_{n, h_{n}} (x) - f_{h_{n}}
+  (x) + f_{h_{n}} (x) - f (x),
+\end{equation*}
+and by \Cref{eqn--convl-kernel-eg-thin-tail} in
+\Cref{thm--convl-kernel-eg-thin-tail},
+\begin{equation*}
+  \lim_{n \to \infty} f_{h_{n}} (x) = \lim_{n \to \infty} \int f \left( x + u
+  h_{n} \right) K (u) \; \mathrm{d} u = f (x) \int K (u) \; \mathrm{d} u = f
+  (x),
+\end{equation*}
+where the last equality follows from \Cref{asm--kernel}
+\ref{asm--kernel-unit-integral}.
+Hence, we are done if we can show \(\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)
+\overset{\mathrm{p}}{\to} 0\).
+But the asymptotic normality part of
+\eqref{eqn--kde-asymp-norm-usual} implies that
+\(\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) = O_{\mathrm{p}} \left( 1 / \sqrt{n
+h_{n}^{d}} \right) = o_{\mathrm{p}} (1)\) since by \Cref{asm--bandwidth}, \(1 /
+\left( n h_{n}^{d} \right) \to 0\) as \(n \to \infty\).
+
+Hence, it remains to show the asymptotic normality part of
+\eqref{eqn--kde-asymp-norm-usual}.
+We shall derive the latter as a corollary of \Cref{thm--kernel-sum-asymp-norm}.
+By \eqref{eqn--kernel-sum-asymp-norm} in \Cref{thm--kernel-sum-asymp-norm}
+\begin{equation}
+  Z_{n, h_{n}} (x) := \frac{S_{n, h_{n}} (x)}{\sqrt{n \Sigma_{h_{n}} (x)}}
+  \rightsquigarrow \N (0, 1).
+  \label{eqn--kde-asymp-norm-1}
+\end{equation}
+The definition of \(\Sigma_{h} (x)\) is given in \eqref{eqn--Sigmah-expand}.
+By \eqref{eqn--fhat-diff-to-kernel-sum} and \eqref{eqn--kde-asymp-norm-1}
+\begin{equation*}
+  \widehat{f}_{n, h} (x) - f_{h} (x) = \frac{S_{n, h} (x)}{n h^{d}} =
+  \frac{\sqrt{n \Sigma_{h} (x)}}{n h^{d}} \cdot Z_{n, h} (x) = \frac{\sqrt{h^{-
+  d} \Sigma_{h} (x)}}{\sqrt{n h^{d}}} \cdot Z_{n, h} (x),
+\end{equation*}
+and so,
+\begin{equation}
+  \sqrt{n h^{d}} \left( \widehat{f}_{n, h} (x) - f_{h} (x) \right) =
+  \sqrt{h^{- d} \Sigma_{h} (x)} \cdot Z_{n, h} (x).
+  \label{eqn--fhat-diff-to-kernel-sum-1}
+\end{equation}
+Now by \eqref{eqn--Sigmah-expand},
+\begin{align*}
+  h^{- d} \Sigma_{h} (x) =
+  & \, h^{- d} \left( h^{d} \int f (x + u h) K (u)^{2} \; \mathrm{d} u - \left(
+  h^{d} \int f (x + u h) K (u) \; \mathrm{d} u \right)^{2} \right) \\
+  =
+  & \, \int f (x + u h) K (u)^{2} \; \mathrm{d} u - h^{d} \left( \int f (x + u
+  h) K (u) \; \mathrm{d} u \right)^{2}.
+\end{align*}
+By \Cref{thm--convl-kernel-eg-thin-tail}
+\begin{equation*}
+  \lim_{n \to \infty} h_{n}^{- d} \Sigma_{h_{n}} (x) = f (x) \int K (u)^{2} \;
+  \mathrm{d} u.
+\end{equation*}
+Combine the above display with \eqref{eqn--kde-asymp-norm-1},
+\eqref{eqn--fhat-diff-to-kernel-sum-1}, and Slutsky's Theorem to get the
+asymptotic normality part of \eqref{eqn--kde-asymp-norm-usual}.
 \qed
 
 \subsubsection{Proof of
-\texorpdfstring{\Cref{thm--kernel-sum-asymptotic-normality}}{Theorem
-\ref{thm--kernel-sum-asymptotic-normality}}}
+\texorpdfstring{\Cref{thm--kernel-sum-asymp-norm}}{Theorem
+\ref{thm--kernel-sum-asymp-norm}}}
+\label{sec--prf--thm--kernel-sum-asymp-norm}
 
 We use Liapunov's Central Limit Theorem to prove
-\eqref{eqn--kernel-sum-asymptotic-normality}.
+\eqref{eqn--kernel-sum-asymp-norm}.
 To that end, define
 \begin{align*}
   b_{n, h} (x)^{4} =
@@ -385,9 +382,176 @@ Combine this with the above displayed expression and
 \end{equation*}
 since \(\lim_{n \to \infty} \max\left\{ h_{n}, 1 / \left( n h_{n}^{d} \right)
 \right\} = 0\).
-The claim in \eqref{eqn--kernel-sum-asymptotic-normality} now follows by
+The claim in \eqref{eqn--kernel-sum-asymp-norm} now follows by
 \eqref{eqn--liapunov-clt}.
 \qed
+
+\subsubsection{Proof of
+\texorpdfstring{\Cref{thm--kde-asymp-norm-conv-var}}{Theorem
+\ref{thm--kde-asymp-norm-conv-var}}}
+\label{sec--prf--thm--kde-asymp-norm-conv-var}
+
+The asymptotic standard normality result in
+\eqref{eqn--kde-asymp-norm-conv-var}
+follows from \eqref{eqn--kernel-sum-asymp-norm-1}, the variance consistency
+result in \eqref{eqn--kde-asymp-norm-conv-var} and Slutsky's Theorem:
+\begin{equation*}
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{\widehat{V}_{n, h_{n}}
+  (x) / n}} = \sqrt{\frac{V_{h_{n}} (x)}{\widehat{V}_{n, h_{n}} (x)}} \cdot
+  \frac{\widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x)}{\sqrt{V_{h_{n}} (x) / n}}
+\rightsquigarrow \N (0, 1).
+\end{equation*}
+Hence, we focus on showing the variance consistency result in
+\eqref{eqn--kde-asymp-norm-conv-var}, which is equivalent to showing
+\begin{equation}
+  \frac{\widehat{V}_{n, h_{n}} (x) - V_{h_{n}} (x)}{V_{h_{n}} (x)}
+  \overset{\mathrm{p}}{\to} 0 \iff \widehat{V}_{n, h_{n}} (x) - V_{h_{n}} (x) =
+  o_{\mathrm{p}} \left( V_{h_{n}} (x) \right).
+  \label{eqn--kernel-sum-variance-consistency-1}
+\end{equation}
+To that end,
+\begin{align*}
+  \widehat{V}_{n, h} (x) - V_{h} (x) =
+  & \, f_{h} (x)^{2} - \widehat{f}_{n, h} (x)^{2} + \frac{1}{n} \sum_{i = 1}^{n}
+  \left\{ K_{h} \left( X_{i} - x \right)^{2} - \E \left[ K_{h} (X - x)^{2}
+  \right] \right\} \\
+  =
+  & \, \left( f_{h} (x) + \widehat{f}_{n, h} (x) \right) \left( f_{h}
+  (x) - \widehat{f}_{n, h} (x) \right) \\
+  & + \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i} - x \right)^{2} -
+  \E \left[ K_{h} (X - x)^{2} \right] \right\} \\
+  =
+  & \, 2 f_{h} (x) \left( f_{h} (x) - \widehat{f}_{n, h} (x) \right) -
+  \left( f_{h} (x) - \widehat{f}_{n, h} (x) \right)^{2} \\
+  & + \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i} - x \right)^{2} -
+  \E \left[ K_{h} (X - x)^{2} \right] \right\}.
+\end{align*}
+Hence,
+\begin{equation}
+  \begin{split}
+    \widehat{V}_{n, h} (x) - V_{h} (x) =
+    & \, R_{n, h} (x) + T_{n, h} (x) \\
+    \text{where} \quad
+    R_{n, h} (x) =
+    & \,  2 f_{h} (x) \left( f_{h} (x) - \widehat{f}_{n, h} (x) \right) -
+    \left( f_{h} (x) - \widehat{f}_{n, h} (x) \right)^{2}, \\
+    \text{and} \quad
+    T_{n, h} (x) =
+    & \, \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i} - x \right)^{2}
+    - \E \left[ K_{h} (X - x)^{2} \right] \right\}.
+  \end{split}
+\end{equation}
+Therefore showing \eqref{eqn--kernel-sum-variance-consistency-1} is equivalent
+to showing
+\begin{equation}
+  R_{n, h_{n}} (x) = o_{\mathrm{p}} \left( V_{h_{n}} (x) \right) \quad
+  \text{and} \quad T_{n, h_{n}} (x) = o_{\mathrm{p}} \left( V_{h_{n}} (x)
+  \right).
+  \label{eqn--kernel-sum-variance-consistency-2}
+\end{equation}
+
+By \eqref{eqn--kernel-sum-asymp-norm-1},
+\begin{equation*}
+  \widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) = O_{p} \left(
+  \sqrt{\frac{V_{h_{n}} (x)}{n}} \right) = O_{p} \left( \frac{V_{h_{n}}
+  (x)}{\sqrt{n V_{h_{n}} (x)}} \right),
+\end{equation*}
+and so,
+\begin{equation}
+  \widehat{f}_{n, h_{n}} (x) - f_{h_{n}} (x) = \frac{1}{\sqrt{n V_{h_{n}} (x)}}
+  \cdot O_{p} \left( V_{h_{n}} (x) \right).
+  \label{eqn--kernel-sum-variance-consistency-Rnh-1}
+\end{equation}
+Since
+\begin{equation}
+  V_{h} (x) = \frac{1}{h^{d}} \left( \int f (x + u h) K (u)^{2} \;
+  \mathrm{d} u - h^{d} \left( \int f (x + u h) K (u) \; \mathrm{d} u \right)^{2}
+  \right),
+  \label{eqn--Vh-expanded-form}
+\end{equation}
+by \Cref{thm--convl-kernel-eg-thin-tail} it follows that
+\begin{equation*}
+  \frac{1}{n V_{h_{n}} (x)} = \frac{h_{n}^{d}}{n} \cdot \frac{1}{f (x) \int K
+  (u)^{2} \; \mathrm{d} u + o (1)}.
+\end{equation*}
+Combine with this \eqref{eqn--kernel-sum-variance-consistency-Rnh-1}
+to conclude that
+\begin{equation}
+  \widehat{f}_{n, h_{n}} - f_{h_{n}} (x) = o_{\mathrm{p}} \left( V_{h_{n}} (x)
+  \right) \quad \text{and so} \quad R_{n, h_{n}} (x) = o_{\mathrm{p}} \left(
+  V_{h_{n}} (x) \right).
+  \label{eqn--kernel-sum-variance-consistency-Rnh}
+\end{equation}
+
+For the second part of \eqref{eqn--kernel-sum-variance-consistency-2}, we will
+use Chebyshev's inequality.
+Note that \eqref{eqn--Vh-expanded-form}
+\begin{align*}
+  T_{n, h_{n}} (x) =
+  & \, O_{\mathrm{p}} \left( \sqrt{\E \left[ T_{n, h_{n}} (x)^{2} \right]}
+  \right) = O_{\mathrm{p}} \left( V_{h} (x) \right) \frac{\sqrt{\E \left[ T_{n,
+  h_{n}} (x)^{2} \right]}}{V_{h} (x)} \\
+  =
+  & \, O_{\mathrm{p}} \left( V_{h_{n}} (x) \right) \frac{h_{n}^{d}
+  \sqrt{\E \left[ T_{n, h_{n}} (x)^{2} \right]}}{\left( \int f \left( x + u
+  h_{n} \right) K (u)^{2} \; \mathrm{d} u - h_{n}^{d} \left( \int f \left( x + u
+  h_{n} \right) K (u) \; \mathrm{d} u \right)^{2} \right)},
+\end{align*}
+and so, by \Cref{thm--convl-kernel-eg-thin-tail}
+\begin{equation}
+  T_{n, h_{n}} (x) = O_{\mathrm{p}} \left( V_{h_{n}} (x) \right)
+  \frac{\sqrt{h_{n}^{2 d} \cdot \E \left[ T_{n, h_{n}} (x)^{2} \right]}}{f (x)
+  \int K (u)^{2} \; \mathrm{d} u + o (1)}
+  \label{eqn--kernel-sum-variance-consistency-Tnh-1}
+\end{equation}
+Now, since \(K_{h} \left( X_{i} - x \right)\) are iid,
+\begin{align*}
+  \E \left[ T_{n, h} (x)^{2} \right] =
+  & \, \E \left[ \left( \frac{1}{n} \sum_{i = 1}^{n} \left\{ K_{h} \left( X_{i}
+  - x \right)^{2} - \E \left[ K_{h} (X - x)^{2} \right] \right\} \right)^{2}
+  \right] \\
+  =
+  & \, \frac{\E \left[ \left( K_{h} \left( X - x \right)^{2} - \E \left[
+  K_{h} (X - x)^{2} \right] \right)^{2} \right]}{n} \\
+  =
+  & \, \frac{\E \left[ K_{h} \left( X - x \right)^{4} \right] - \E \left[ K_{h}
+  (X - x)^{2} \right]^{2}}{n} \\
+  =
+  & \, \frac{\frac{1}{h^{3 d}} \int f (x + u h) K (u)^{4} \; \mathrm{d} u
+  - \left( \frac{1}{h^{d}} \int f (x + u h) K (u)^{2} \; \mathrm{d} u
+  \right)^{2}}{n}.
+\end{align*}
+Therefore,
+\begin{equation*}
+  h^{2 d} \E \left[ T_{n, h} (x)^{2} \right] =
+  \frac{\int f (x + u h) K (u)^{4} \; \mathrm{d} u - h^{d} \left( \int
+  f (x + u h) K (u)^{2} \; \mathrm{d} u \right)^{2}}{n h^{d}},
+\end{equation*}
+and so by \Cref{thm--convl-kernel-eg-thin-tail},
+\begin{equation}
+  h_{n}^{2 d} \E \left[ T_{n, h_{n}} (x)^{2} \right] = \frac{f (x) \int K
+  (u)^{4} \; \mathrm{d} u + o (1)}{n h_{n}^{d}}.
+  \label{eqn--kernel-sum-variance-consistency-Tnh-2}
+\end{equation}
+Combine \eqref{eqn--kernel-sum-variance-consistency-Tnh-2} with
+\eqref{eqn--kernel-sum-variance-consistency-Tnh-1} to see that
+\begin{equation}
+  \begin{split}
+    T_{n, h_{n}} (x) =
+    & \, O_{\mathrm{p}} \left( V_{h_{n}} (x) \right)
+    \frac{\sqrt{f (x) \int K (u)^{4} \; \mathrm{d} u + o (1)}}{f (x)
+    \int K (u)^{2} \; \mathrm{d} u + o (1)} \cdot \frac{1}{n h_{n}^{d}}, \\
+    \text{and so} \quad T_{n, h_{n}} (x) =
+    & \, o_{\mathrm{p}} \left( V_{h_{n}} (x)
+    \right).
+  \end{split}
+  \label{eqn--kernel-sum-variance-consistency-Tnh}
+\end{equation}
+Now, \eqref{eqn--kernel-sum-variance-consistency-2} follows from
+\eqref{eqn--kernel-sum-variance-consistency-Rnh} and
+\eqref{eqn--kernel-sum-variance-consistency-Tnh}.
+\qed
+
 
 %%% Local Variables:
 %%% mode: LaTeX
